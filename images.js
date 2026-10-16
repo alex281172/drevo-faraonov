@@ -1199,5 +1199,141 @@ window.PD.images = {
   "artist": "автор неизвестен",
   "license": "общественное достояние",
   "page": "https://commons.wikimedia.org/wiki/File:El-Tod._Tempel_van_Montu._Laagreli%C3%ABf_van_Mentuhotep_III_op_muur_%28cropped%29.jpg"
+ },
+ "khyan": {
+  "img": "img/khyan.jpg",
+  "w": 330,
+  "h": 268,
+  "artist": "Juan R. Lazaro",
+  "license": "CC BY 2.0",
+  "page": "https://commons.wikimedia.org/wiki/File:Khyan.jpg"
+ },
+ "apepi": {
+  "img": "img/apepi.jpg",
+  "w": 250,
+  "h": 150,
+  "artist": "Британский музей",
+  "license": "общественное достояние",
+  "page": "https://commons.wikimedia.org/wiki/File:Rhind_Mathematical_Papyrus.jpg"
+ },
+ "seqenenre": {
+  "img": "img/seqenenre.jpg",
+  "w": 500,
+  "h": 677,
+  "artist": "Музей искусств округа Лос-Анджелес",
+  "license": "общественное достояние",
+  "page": "https://commons.wikimedia.org/wiki/File:Ceremonial_Battle_Axe_Inscribed_with_Name_of_King_Seqenenre_Tao_LACMA_M.80.203.43.jpg"
+ },
+ "kamose": {
+  "img": "img/kamose.jpg",
+  "w": 250,
+  "h": 408,
+  "artist": "Andrzej Kośka",
+  "license": "CC BY-SA 3.0",
+  "page": "https://commons.wikimedia.org/wiki/File:Stela_kamose.jpg"
+ },
+ "ahhotep1": {
+  "img": "img/ahhotep1.jpg",
+  "w": 250,
+  "h": 254,
+  "artist": "Rob Corder",
+  "license": "CC BY 4.0",
+  "page": "https://commons.wikimedia.org/wiki/File:Golden_Flies_Military_Award_Queen_Ahhotep_Necklace.jpg"
+ },
+ "tetisheri": {
+  "img": "img/tetisheri.jpg",
+  "w": 500,
+  "h": 434,
+  "artist": "Paul James Cowie",
+  "license": "CC BY 2.0",
+  "page": "https://commons.wikimedia.org/wiki/File:Stela_of_Ahmose_Honouring_Tetisheri_%28Egyptian_Museum_CG_34002%29_d2.jpg"
+ },
+ "intef6": {
+  "img": "img/intef6.jpg",
+  "w": 330,
+  "h": 495,
+  "artist": "cogdogblog",
+  "license": "CC BY 2.0",
+  "page": "https://commons.wikimedia.org/wiki/File:Nubkheperre_Intef%27s_Coffin.jpg"
+ },
+ "intef5": {
+  "img": "img/intef5.jpg",
+  "w": 330,
+  "h": 761,
+  "artist": "Shonagon",
+  "license": "CC0",
+  "page": "https://commons.wikimedia.org/wiki/File:Cercueil_de_S%C3%A9khemr%C3%AA-Oupma%C3%A2t_Antef-%C3%82a_-_Mus%C3%A9e_du_Louvre_Antiquit%C3%A9s_%C3%A9gyptiennes_E_3019_%3B_N_712.jpg"
+ },
+ "intef7": {
+  "img": "img/intef7.jpg",
+  "w": 330,
+  "h": 440,
+  "artist": "Zakarie Faibis",
+  "license": "CC BY-SA 4.0",
+  "page": "https://commons.wikimedia.org/wiki/File:Cercueil_de_S%C3%A9khemr%C3%AA-H%C3%A9rouherma%C3%A2t_Antef%2C_E_3020%2C_%28216%29.jpg"
+ },
+ "sobekemsaf1": {
+  "img": "img/sobekemsaf1.jpg",
+  "w": 250,
+  "h": 187,
+  "artist": "Sanjay ach",
+  "license": "CC BY-SA 4.0",
+  "page": "https://commons.wikimedia.org/wiki/File:Red_granite_seated_statue_of_Sobekemsaf_I_%28cropped%29.jpg"
+ },
+ "senebkay": {
+  "img": "img/senebkay.jpg",
+  "w": 250,
+  "h": 357,
+  "artist": "Дженнифер Вегнер, Пенсильванский музей",
+  "license": "общественное достояние",
+  "page": "https://commons.wikimedia.org/wiki/File:Image_1698_1e-Senebkay.jpg"
+ },
+ "m-senebkay": {
+  "img": "img/m-senebkay.jpg",
+  "w": 330,
+  "h": 220,
+  "artist": "автор указан на Викискладе",
+  "license": "CC0",
+  "page": "https://commons.wikimedia.org/wiki/File:%D0%A0%D0%BE%D1%81%D0%BF%D0%B8%D1%81%D1%8C_%D0%BD%D0%B0_%D1%81%D1%82%D0%B5%D0%BD%D0%B5_%D0%BF%D0%BE%D0%B3%D1%80%D0%B5%D0%B1%D0%B0%D0%BB%D1%8C%D0%BD%D0%BE%D0%B9_%D0%BA%D0%B0%D0%BC%D0%B5%D1%80%D1%8B_%D0%B3%D1%80%D0%BE%D0%B1%D0%BD%D0%B8%D1%86%D1%8B_%D0%A3%D1%81%D0%B5%D1%80%D0%B8%D0%B1%D1%80%D1%8B_%D0%A1%D0%B5%D0%BD%D0%B5%D0%B1%D0%BA%D0%B0%D1%8F.jpg"
+ },
+ "pl-dra": {
+  "img": "img/pl-dra.jpg",
+  "w": 330,
+  "h": 220,
+  "artist": "Roland Unger",
+  "license": "CC BY-SA 3.0",
+  "page": "https://commons.wikimedia.org/wiki/File:DraAbuNagaSite.jpg"
+ },
+ "djehuti": {
+  "img": "img/djehuti.jpg",
+  "w": 500,
+  "h": 998,
+  "artist": "Флиндерс Питри",
+  "license": "общественное достояние",
+  "page": "https://commons.wikimedia.org/wiki/File:Block_Djehuti_Petrie.jpg"
+ },
+ "m-avaris-tombs": {
+  "img": "img/m-avaris-tombs.jpg",
+  "w": 330,
+  "h": 403,
+  "artist": "Метрополитен-музей",
+  "license": "CC0",
+  "page": "https://commons.wikimedia.org/wiki/File:Tell_el-Yahudiya-ware_juglet_MET_MMA15.3.1677.jpg"
+ },
+ "m-sobekemsaf2": {
+  "img": "img/m-sobekemsaf2.jpg",
+  "w": 330,
+  "h": 166,
+  "artist": "автор указан на Викискладе",
+  "license": "CC BY-SA 3.0",
+  "page": "https://commons.wikimedia.org/wiki/File:AbbottPapyrus-BritishMuseum-August21-08.jpg"
+ },
+ "m-intef6": {
+  "img": "img/m-intef6.jpg",
+  "w": 500,
+  "h": 617,
+  "artist": "Огюст Мариетт",
+  "license": "общественное достояние",
+  "page": "https://commons.wikimedia.org/wiki/File:Obelisk_of_Nubkheperre_Intef.jpg"
  }
 };

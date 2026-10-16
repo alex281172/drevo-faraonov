@@ -82,6 +82,17 @@
       body += txt(x0 + 6, g - 8, p.shape === "bent" ? `${deg(p.angle)} / ${deg(p.angle2)}` : deg(p.angle), "sc-small");
     }
     if (p.shape === "bent") body += txt(cx + 70, g - p.bendAt * S + 4, `излом на высоте ≈${f1(p.bendAt)} м`, "sc-small");
+    // крошечную пирамиду дополнительно показываем крупно
+    if (p.base < 30 && p.height) {
+      const z = 6 * S, ix = 96, ig = 214, bx0 = 14, bx1 = 214;
+      body += `<rect x="${bx0}" y="40" width="${bx1 - bx0}" height="${ig - 26}" rx="6" class="sc-inset-box"/>`;
+      body += `<path d="${pyramidShape(p, ix, ig, z)}" class="${fillCls}"/>`;
+      if (p.core === "brick") body += `<path d="${pyramidShape(p, ix, ig, z)}" class="sc-casing"/>`;
+      body += `<path d="M${bx0 + 10} ${ig}H${bx1 - 10}" class="sc-groundline"/>`;
+      body += txt(ix, ig + 16, `${f1(p.base)} м`, "sc-dimtext", "middle") + txt(ix + p.base * z / 2 + 8, ig - p.height * z / 2, `${f1(p.height)} м`, "sc-dimtext");
+      body += txt((bx0 + bx1) / 2, 58, "та же пирамида крупнее в 6 раз", "sc-small", "middle");
+      body += `<path d="M${f(cx - 6)} ${f(g - h - 4)}L${bx1} ${ig - 70}" class="sc-leader"/>`;
+    }
     // масштаб
     body += `<path d="M14 ${g + 50}H${f(14 + 50 * S)}" class="sc-scale"/><path d="M14 ${g + 46}V${g + 54}M${f(14 + 50 * S)} ${g + 46}V${g + 54}" class="sc-scale"/>`;
     body += txt(14, g + 44, "50 м", "sc-small");
@@ -296,9 +307,59 @@
     b += `<path d="${pyramidShape(KHUFU, W / 2, g, S * 0.75)}" class="sc-ghost"/>`;
     b += `<path d="M${W / 2 - 70} ${g}L${W / 2} ${g - 80}L${W / 2 + 70} ${g}Z" class="sc-planned"/>`;
     b += txt(W / 2, g - 92, "?", "sc-dimtext", "middle");
-    b += txt(W / 2, g + 26, "пирамида сильно разрушена, её размеры на схеме не показаны", "sc-small", "middle");
+    b += txt(W / 2, g + 26, (m.dims && m.dims.note) || "пирамида сильно разрушена, её размеры на схеме не показаны", "sc-small", "middle");
     b += txt(10, 18, "Контур Великой пирамиды – для сравнения", "sc-small sc-muted");
     return svg(W, 260, b, `Пирамида: ${m.name}`);
+  }
+
+  /* ---------- Сводчатая гробница Авариса (разрез) ---------- */
+  const donkey = (x, y, s = 1, flip = false) => {
+    const k = flip ? -1 : 1, X = d => f(x + d * s * k), Y = d => f(y + d * s);
+    return `<path d="M${X(-22)} ${Y(-6)}Q${X(-20)} ${Y(-16)} ${X(0)} ${Y(-16)}Q${X(18)} ${Y(-16)} ${X(20)} ${Y(-8)}L${X(30)} ${Y(-20)}L${X(36)} ${Y(-17)}L${X(28)} ${Y(-4)}Q${X(22)} ${Y(-2)} ${X(18)} ${Y(-2)}L${X(18)} ${Y(12)}M${X(10)} ${Y(-2)}L${X(10)} ${Y(12)}M${X(-12)} ${Y(-4)}L${X(-12)} ${Y(12)}M${X(-19)} ${Y(-5)}L${X(-19)} ${Y(12)}M${X(-22)} ${Y(-6)}L${X(-28)} ${Y(4)}M${X(31)} ${Y(-20)}L${X(30)} ${Y(-27)}" class="sc-animal"/>`;
+  };
+  function vault(m) {
+    const W = 560, H = 300, g = 96; let b = DEFS;
+    b += `<rect x="0" y="${g}" width="${W}" height="${H - g}" class="sc-rockfill"/><path d="M0 ${g}H${W}" class="sc-groundline"/>`;
+    b += `<rect x="40" y="${g - 70}" width="22" height="70" class="sc-brickwall-face"/>` + txt(70, g - 52, "стена дома", "sc-small");
+    b += txt(150, g - 10, "двор дома", "sc-small");
+    // яма и сводчатая камера
+    b += `<path d="M180 ${g}V${g + 150}H360V${g}" class="sc-pit"/>`;
+    b += `<path d="M196 ${g + 146}V${g + 86}A74 50 0 0 1 344 ${g + 86}V${g + 146}Z" fill="url(#sc-brickpat)" class="sc-outline"/>`;
+    b += `<path d="M206 ${g + 140}V${g + 90}A64 42 0 0 1 334 ${g + 90}V${g + 140}Z" class="sc-room"/>`;
+    b += `<ellipse cx="260" cy="${g + 128}" rx="34" ry="8" class="sc-body"/><circle cx="296" cy="${g + 124}" r="7" class="sc-body"/>`;
+    b += `<path d="M222 ${g + 136}q-6 -14 0 -22h6q6 8 0 22z" class="sc-jar"/><path d="M318 ${g + 136}q-5 -12 0 -18h5q5 6 0 18z" class="sc-jar"/>`;
+    // ослы у входа
+    b += `<rect x="390" y="${g + 6}" width="140" height="50" class="sc-pit"/>`;
+    b += donkey(425, g + 36, 0.8) + donkey(492, g + 38, 0.8);
+    b += txt(460, g + 74, "ослы, погребённые", "sc-label", "middle") + txt(460, g + 90, "у входа", "sc-label", "middle");
+    b += txt(270, g + 176, "камера с кирпичным сводом", "sc-label", "middle");
+    b += txt(270, g + 192, "внутри – умерший и кувшины", "sc-small", "middle");
+    b += txt(10, 18, "Разрез, масштаб условный", "sc-small");
+    return svg(W, H, b, `Разрез: ${m.name}`);
+  }
+
+  /* ---------- Гробница из нескольких камер (план) ---------- */
+  function chamberTomb(m) {
+    const W = 560, H = 280; let b = DEFS + `<rect width="${W}" height="${H}" class="sc-sand"/>`;
+    const y = 110, h = 70, rooms = [[70, 80], [160, 70], [240, 70], [320, 150]];
+    b += `<path d="M20 ${y + h / 2}H70" class="sc-passage"/>` + txt(20, y + h / 2 - 10, "вход", "sc-small");
+    rooms.forEach(([x, w], i) => {
+      const last = i === rooms.length - 1;
+      b += `<rect x="${x}" y="${y}" width="${w - 8}" height="${h}" ${last ? 'class="sc-stone"' : 'fill="url(#sc-brickpat)" class="sc-outline"'}/>`;
+      if (!last) b += `<rect x="${x + 6}" y="${y + 6}" width="${w - 20}" height="${h - 12}" class="sc-room"/>`;
+    });
+    const [lx, lw] = rooms[3];
+    b += `<rect x="${lx + 10}" y="${y + 10}" width="${lw - 28}" height="${h - 20}" class="sc-room"/>`;
+    b += `<rect x="${lx + lw - 46}" y="${y + 24}" width="20" height="22" class="sc-temple"/>`;
+    [["Нут", lx + 30, true], ["Нефтида", lx + 80, true], ["Серкет", lx + 30, false], ["Исида", lx + 80, false]].forEach(([n, x, top]) => {
+      b += `<circle cx="${x}" cy="${top ? y + 5 : y + h - 5}" r="4" class="sc-goddess"/>` + txt(x, top ? y - 8 : y + h + 18, n, "sc-small", "middle");
+    });
+    b += `<path d="M${lx + lw - 26} ${y + 35}H${lx + lw + 2}" class="sc-leader"/>` + txt(lx + lw + 4, y + 32, "ниша", "sc-small") + txt(lx + lw + 4, y + 46, "для каноп", "sc-small");
+    b += txt(190, y - 30, "четыре камеры подряд", "sc-label", "middle");
+    b += txt(lx + lw / 2 - 4, y + h + 50, "погребальная камера из известняка,", "sc-label", "middle");
+    b += txt(lx + lw / 2 - 4, y + h + 66, "расписана изображениями богинь", "sc-label", "middle");
+    b += txt(10, 18, "План, упрощённо, масштаб условный", "sc-small");
+    return svg(W, H, b, `План: ${m.name}`);
   }
 
   function monument(m) {
@@ -314,6 +375,8 @@
     if (t === "rock") return rock(m);
     if (t === "terrace") return terrace(m);
     if (t === "saff") return saff(m);
+    if (t === "vault") return vault(m);
+    if (t === "chamber") return chamberTomb(m);
     return "";
   }
 
@@ -388,7 +451,7 @@
   }
   const RANK = { capital: 0, city: 1, necropolis: 2, mine: 3 };
   function mapDots(list, P, hi, W, H, fixed) {
-    const items = list.map(p => { const [x, y] = P([p.lat, p.lon]); return { p, x, y, text: p.name, on: p.id === hi ? 1 : 0, rank: RANK[p.kind] ?? 4, left: !!p.labelLeft }; });
+    const items = list.filter(p => !p.minor || p.id === hi).map(p => { const [x, y] = P([p.lat, p.lon]); return { p, x, y, text: p.name, on: p.id === hi ? 1 : 0, rank: RANK[p.kind] ?? 4, left: !!p.labelLeft }; });
     let b = "";
     items.forEach(it => { b += `<a href="#pl-${esc(it.p.id)}"><circle cx="${f(it.x)}" cy="${f(it.y)}" r="${it.on ? 7 : 4.5}" class="sc-dot sc-dot-${esc(it.p.kind)}${it.on ? " sc-dot-on" : ""}"><title>${esc(it.p.name)}</title></circle></a>`; });
     placeLabels(items, W, H, fixed).forEach(it => { b += `<a href="#pl-${esc(it.p.id)}">${txt(it.x, it.y, it.text, it.on ? "sc-label sc-strong" : "sc-label", it.a)}</a>`; });
@@ -422,8 +485,8 @@
     // врезка района Мемфиса
     const box = MEM, [bx0, by0] = P([box[1], box[2]]), [bx1, by1] = P([box[0], box[3]]);
     b += `<rect x="${f(bx0)}" y="${f(by0)}" width="${f(bx1 - bx0)}" height="${f(by1 - by0)}" class="sc-inset"/>` + txt(bx1 + 4, by0 + 10, "Мемфис и Файюм – на отдельной схеме", "sc-small");
-    const ins = [bx1 + 2, by0, 225, 14], nile = P([27.4, 31.55]);
-    b += mapDots(places.filter(p => !p.memphis && p.lat), P, hi, W, H, [ins, [nile[0], nile[1] - 11, 24, 14], [bx0, by0, bx1 - bx0, by1 - by0]]);
+    const ins = [bx1 + 2, by0, 225, 14], nile = P([27.4, 31.55]), rs = P([26.2, 34.6]);
+    b += mapDots(places.filter(p => !p.memphis && p.lat), P, hi, W, H, [ins, [nile[0], nile[1] - 11, 24, 14], [bx0, by0, bx1 - bx0, by1 - by0], [rs[0] - 42, rs[1] - 11, 84, 14]]);
     return svg(W, H, b, "Карта Египта", "scheme-map");
   }
   const MEM = [29.0, 30.2, 30.72, 31.45];
@@ -483,5 +546,46 @@
     return svg(W, H, b, "План Кахуна");
   }
 
-  window.Schemes = { monument, pyramidProfile, khufuSection, compare, complexPlan, palaceFacade, egyptMap, memphisMap, gizaPlan, kahunPlan };
+  /* ---------- Дейр эль-Баллас: расположение дворцов ---------- */
+  function ballasPlan() {
+    const W = 560, H = 380; let b = `<rect width="${W}" height="${H}" class="sc-sand"/>`;
+    b += `<path d="M470 0C455 120 500 250 470 ${H}H${W}V0Z" class="sc-water"/>` + txt(520, 190, "Нил", "sc-label", "middle", `transform="rotate(90 520 190)"`);
+    b += `<path d="M60 40C-20 140 10 270 120 330" class="sc-cliff"/><path d="M60 40C120 20 200 30 250 50" class="sc-cliff"/>` + txt(18, 30, "известняковые скалы полукругом", "sc-small");
+    // Северный дворец
+    b += `<rect x="120" y="120" width="150" height="110" class="sc-wall-thick"/>`;
+    for (let i = 0; i < 3; i++) for (let j = 0; j < 4; j++) b += `<circle cx="${140 + j * 14}" cy="${140 + i * 14}" r="2.5" class="sc-pillar-dot"/>`;
+    for (let i = 0; i < 3; i++) for (let j = 0; j < 4; j++) b += `<circle cx="${200 + j * 14}" cy="${185 + i * 14}" r="2.5" class="sc-pillar-dot"/>`;
+    b += `<rect x="208" y="132" width="44" height="36" class="sc-platform"/>` + txt(230, 154, "помост", "sc-small", "middle");
+    b += `<path d="M120 200H96" class="sc-passage"/>`;
+    b += txt(195, 108, "Северный дворец – жилище царя", "sc-label", "middle");
+    b += txt(195, 250, "дворы с колоннами, длинный вход,", "sc-small", "middle") + txt(195, 264, "в центре – высокий помост", "sc-small", "middle");
+    // посёлок
+    [[340, 90], [372, 122], [350, 160], [395, 74], [334, 200], [374, 212], [410, 160]].forEach(([x, y]) => { b += `<rect x="${x}" y="${y}" width="16" height="12" class="sc-house"/>`; });
+    b += txt(375, 244, "дома посёлка", "sc-small", "middle");
+    // Южный дворец
+    b += `<path d="M330 360Q380 300 440 360" class="sc-hill"/><rect x="350" y="318" width="70" height="16" class="sc-platform"/>`;
+    b += txt(385, 306, "Южный дворец", "sc-label", "middle");
+    b += txt(340, 344, "наблюдательная площадка", "sc-small", "end") + txt(340, 358, "на холме, с видом на Нил", "sc-small", "end");
+    b += `<path d="M420 326Q450 300 468 300" class="sc-leader" marker-end="url(#sc-arr)"/>`;
+    b += txt(462, 18, "Расположение упрощено, без масштаба", "sc-small", "end");
+    return svg(W, H, DEFS + b, "Схема Дейр эль-Балласа");
+  }
+
+  /* ---------- Дворцы в одном масштабе ---------- */
+  function palaceAreas() {
+    const k = 0.75, g = 214, W = 690; let x = 16, b = `<rect width="${W}" height="300" class="sc-sand"/>`;
+    const item = (w, h, cls, l1, l2, l3) => {
+      const cx = x + w * k / 2, s = `<rect x="${f(x)}" y="${f(g - h * k)}" width="${f(w * k)}" height="${f(h * k)}" class="${cls}"/>`
+        + txt(cx, g + 20, l1, "sc-label", "middle") + txt(cx, g + 36, l2, "sc-small", "middle") + txt(cx, g + 50, l3, "sc-small", "middle");
+      x += w * k + 44; return s;
+    };
+    b += item(230, 230, "sc-ghost", "Великая пирамида", "основание", "230 × 230 м");
+    b += item(212, 212, "sc-area-min", "Дейр эль-Баллас", "Северный дворец:", "не меньше 45 000 м²");
+    b += item(150, 40, "sc-platform", "Дейр эль-Баллас", "Южный дворец:", "помост ≈150 × 40 м");
+    b += item(100, 100, "sc-area-min", "Аварис", "дворец Хиана:", "больше 10 000 м²");
+    b += txt(10, 18, "Площади в одном масштабе; для дворцов – квадрат той же площади", "sc-small");
+    return `<svg class="scheme scheme-wide" viewBox="0 0 ${W} 300" role="img" aria-label="Дворцы в одном масштабе">${DEFS + b}</svg>`;
+  }
+
+  window.Schemes = { monument, pyramidProfile, khufuSection, compare, complexPlan, palaceFacade, egyptMap, memphisMap, gizaPlan, kahunPlan, ballasPlan, palaceAreas };
 })();

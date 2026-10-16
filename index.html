@@ -351,6 +351,12 @@ footer .wrap { padding-block: 20px 28px; font: 13.5px var(--f-ui); color: var(--
 .sc-dot-on { stroke: var(--star); stroke-width: 3.5; }
 .sc-wall-thick { fill: none; stroke: var(--brick); stroke-width: 6; } .sc-house { fill: var(--room); stroke: var(--brick-line); stroke-width: .8; }
 .sc-villa { fill: var(--gold-soft); stroke: var(--brick-line); } .sc-palace { fill: var(--gold-soft); stroke: var(--gold); stroke-width: 2; }
+.sc-pit { fill: var(--ground); stroke: var(--rock-line); stroke-width: 1; } .sc-body { fill: var(--stone-edge); stroke: var(--ink); stroke-width: .8; }
+.sc-jar { fill: var(--brick-line); stroke: var(--ink); stroke-width: .6; } .sc-animal { fill: none; stroke: var(--ink); stroke-width: 3; stroke-linecap: round; stroke-linejoin: round; }
+.sc-cliff { fill: none; stroke: var(--rock-line); stroke-width: 9; stroke-linecap: round; } .sc-hill { fill: var(--ground); stroke: var(--rock-line); }
+.sc-platform { fill: var(--stone); stroke: var(--stone-edge); stroke-width: 1.2; } .sc-pillar-dot { fill: var(--stone-edge); }
+.sc-area-min { fill: var(--gold-soft); stroke: var(--gold); stroke-width: 1.5; stroke-dasharray: 6 3; }
+.sc-inset-box { fill: var(--surface); stroke: var(--rule); } .sc-goddess { fill: var(--gold); stroke: var(--ink); stroke-width: .6; }
 .map-key { display: flex; flex-wrap: wrap; gap: 6px 18px; font: 13px var(--f-ui); color: var(--muted); margin-top: 8px; }
 .map-key i { display: inline-block; width: 10px; height: 10px; border-radius: 50%; margin-right: 6px; vertical-align: 0; }
 @media (max-width: 720px) {
@@ -409,6 +415,7 @@ footer .wrap { padding-block: 20px 28px; font: 13.5px var(--f-ui); color: var(--
 <script src="data-monuments.js"></script>
 <script src="data-step4.js"></script>
 <script src="data-places.js"></script>
+<script src="data-step5.js"></script>
 <script src="data-media.js"></script>
 <script src="schemes.js"></script>
 <script src="images.js"></script>
@@ -783,7 +790,7 @@ footer .wrap { padding-block: 20px 28px; font: 13.5px var(--f-ui); color: var(--
   Object.entries(D.monuments).forEach(([id, m]) => { m.id = id; });
   Object.entries(D.places).forEach(([id, p]) => { p.id = id; });
   const SC = window.Schemes;
-  const MTYPE = { abydos: "царская гробница Абидоса", mastaba: "мастаба", gallery: "подземная галерейная гробница", enclosure: "заупокойная ограда", sarcophagus: "гробница в форме саркофага", stepmastaba: "двухступенчатая гробница", shaft: "шахтная гробница", rock: "скальная гробница", terrace: "террасный храм-гробница", saff: "сафф-гробница" };
+  const MTYPE = { abydos: "царская гробница Абидоса", mastaba: "мастаба", gallery: "подземная галерейная гробница", enclosure: "заупокойная ограда", sarcophagus: "гробница в форме саркофага", stepmastaba: "двухступенчатая гробница", shaft: "шахтная гробница", rock: "скальная гробница", terrace: "террасный храм-гробница", saff: "сафф-гробница", vault: "сводчатая гробница", chamber: "гробница из нескольких камер" };
   const mtype = m => m.type === "pyramid" ? ((m.dims && m.dims.shape === "step") ? "ступенчатая пирамида" : (m.dims && m.dims.shape === "bent") ? "ломаная пирамида" : (m.dims && (m.dims.shape === "frustum" || m.dims.shape === "ruin")) ? "пирамида, недостроенная или разрушенная" : "пирамида") : (MTYPE[m.type] || "гробница");
   const KIND = { capital: "столица", city: "город", necropolis: "некрополь", mine: "рудник или гавань" };
   const KINDS = { capital: "Столицы", city: "Города", necropolis: "Некрополи", mine: "Рудники и гавани" };
@@ -821,7 +828,9 @@ footer .wrap { padding-block: 20px 28px; font: 13.5px var(--f-ui); color: var(--
     enclosure: "план ограды сверху.", sarcophagus: "вид гробницы сбоку.",
     stepmastaba: "вид гробницы сбоку: нижняя ступень вырублена из скалы, верхняя сложена из камня.",
     shaft: "разрез шахтной гробницы.", rock: "разрез скальной гробницы.",
-    terrace: "разрез храма-гробницы от пандуса к скалам.", saff: "план сафф-гробницы сверху."
+    terrace: "разрез храма-гробницы от пандуса к скалам.", saff: "план сафф-гробницы сверху.",
+    vault: "разрез гробницы гиксосского времени: сводчатая кирпичная камера в яме под двором дома и погребение ослов у входа.",
+    chamber: "план гробницы: четыре камеры подряд, последняя – погребальная, из известняка, с росписью."
   };
   // ссылки на места в текстах
   const stems = [];
@@ -915,6 +924,8 @@ footer .wrap { padding-block: 20px 28px; font: 13.5px var(--f-ui); color: var(--
       <section class="section"><h2>Как выглядели дворцы</h2>
         <div class="scheme-box">${SC.palaceFacade()}</div>
         <p class="scheme-cap"><b>Что на схеме:</b> стена дворца с чередованием выступов и ниш и серех – рамка с именем царя, нижняя часть которой изображает такой же фасад.</p>
+        <div class="scheme-box" style="margin-top:16px">${SC.palaceAreas()}</div>
+        <p class="scheme-cap"><b>Что на схеме:</b> размеры раскопанных дворцов Второго переходного периода в одном масштабе с основанием Великой пирамиды. Дворцы показаны квадратами той же площади; пунктир означает «не меньше».</p>
         <p>Дворцы строили из сырцового кирпича и дерева, и почти все они растворились в земле. Мы знаем их по немногим раскопанным остаткам и по изображениям: серех, ограды Абидоса и ступенчатой пирамиды повторяют фасад дворца.</p>
         ${palaces.map(p => p.palaces.map(x => `<div class="palace"><h3>${esc(x.name)}</h3><p>${esc(x.text)} <a href="#pl-${p.id}">${esc(p.name)} →</a></p></div>`).join("")).join("")}
       </section>
@@ -927,7 +938,9 @@ footer .wrap { padding-block: 20px 28px; font: 13.5px var(--f-ui); color: var(--
     const fig = img ? `<figure><div class="fig-frame"><img src="${esc(img.img)}" alt="${esc(p.imgDesc || p.name)}" width="${img.w}" height="${img.h}"></div><figcaption><b>Что на снимке.</b> ${esc(p.imgDesc || "")}${credit(img)}</figcaption></figure>` : "";
     const special = p.scheme === "giza" ? [SC.gizaPlan(), "план плато Гизы с севера: три великие пирамиды и пирамиды цариц в масштабе, поля мастаб к западу и востоку от Хуфу, Большой сфинкс и дорога к нижнему храму Хафры."]
       : p.scheme === "kahun" ? [SC.kahunPlan(), "план города Кахун: стена делит его на квартал рабочих с маленькими домами и квартал больших усадеб; на возвышении – «акрополь»."]
-      : p.scheme === "facade" ? [SC.palaceFacade(), "фасад дворца с выступами и нишами, такой же, как в нижней части сереха."] : null;
+      : p.scheme === "facade" ? [SC.palaceFacade(), "фасад дворца с выступами и нишами, такой же, как в нижней части сереха."]
+      : p.scheme === "ballas" ? [SC.ballasPlan(), "расположение Дейр эль-Балласа: Северный дворец посреди полукруга скал, вокруг – дома посёлка, далеко к югу на холме – Южный дворец, наблюдательный помост с видом на Нил."]
+      : p.scheme === "palaces" ? [SC.palaceAreas(), "размеры дворцов в одном масштабе с основанием Великой пирамиды. Дворцы показаны квадратами той же площади; пунктир означает «не меньше»."] : null;
     const mons = monsAt(id);
     app.innerHTML = `
       <nav class="crumbs" aria-label="Путь"><a href="#">Лента времени</a><span>›</span><a href="#places">Места</a><span>›</span><span>${esc(p.name)}</span></nav>
