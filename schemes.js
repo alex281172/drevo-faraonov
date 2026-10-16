@@ -377,6 +377,9 @@
     if (t === "saff") return saff(m);
     if (t === "vault") return vault(m);
     if (t === "chamber") return chamberTomb(m);
+    if (t === "kv") return kvTomb(m);
+    if (t === "tut") return tutPlan(m);
+    if (t === "temple") return templePlan(m);
     return "";
   }
 
@@ -459,11 +462,11 @@
   }
 
   /* ---------- Карты ---------- */
-  const NILE = [[24.09, 32.90], [24.47, 32.95], [24.98, 32.87], [25.29, 32.55], [25.69, 32.64], [26.16, 32.72], [26.05, 32.24], [26.34, 31.89], [26.56, 31.70], [27.18, 31.18], [28.10, 30.75], [29.07, 31.10], [29.6, 31.25], [30.05, 31.23], [30.20, 31.12]];
+  const NILE = [[21.9, 31.3], [22.34, 31.63], [22.8, 32.1], [23.2, 32.6], [23.6, 32.85], [24.09, 32.90], [24.47, 32.95], [24.98, 32.87], [25.29, 32.55], [25.69, 32.64], [26.16, 32.72], [26.05, 32.24], [26.34, 31.89], [26.56, 31.70], [27.18, 31.18], [27.65, 30.86], [28.10, 30.75], [29.07, 31.10], [29.6, 31.25], [30.05, 31.23], [30.20, 31.12]];
   const ROSETTA = [[30.20, 31.12], [30.6, 30.9], [31.0, 30.6], [31.46, 30.37]];
   const DAMIETTA = [[30.20, 31.12], [30.6, 31.2], [31.0, 31.5], [31.52, 31.84]];
   const COAST = [[31.0, 29.3], [31.2, 29.9], [31.46, 30.37], [31.6, 30.9], [31.52, 31.84], [31.26, 32.30], [31.13, 33.80], [31.3, 34.25], [31.6, 35.6]];
-  const REDSEA_W = [[29.97, 32.55], [29.6, 32.32], [29.11, 32.66], [28.36, 33.08], [27.25, 33.81], [26.75, 33.94], [26.10, 34.28], [25.07, 34.89], [24.0, 35.4]];
+  const REDSEA_W = [[29.97, 32.55], [29.6, 32.32], [29.11, 32.66], [28.36, 33.08], [27.25, 33.81], [26.75, 33.94], [26.10, 34.28], [25.07, 34.89], [24.0, 35.4], [23.4, 35.6]];
   const SINAI = [[29.97, 32.55], [29.58, 32.71], [28.24, 33.62], [27.73, 34.25], [28.49, 34.51], [29.49, 34.89]];
   function proj(b, W, H) {
     const [la0, la1, lo0, lo1] = b, k = Math.cos(rad((la0 + la1) / 2));
@@ -472,21 +475,22 @@
   }
   const line = (pts, P) => pts.map((q, i) => (i ? "L" : "M") + P(q).map(f).join(" ")).join("");
   function egyptMap(places, hi, opt = {}) {
-    const W = 520, H = 760, P = proj([23.8, 31.75, 29.3, 35.6], W, H);
+    const W = 520, H = 920, P = proj([21.9, 31.75, 29.3, 35.6], W, H);
     let b = `<rect width="${W}" height="${H}" class="sc-land"/>`;
     b += `<path d="${line(COAST, P)}L${P([31.75, 35.6]).map(f).join(" ")}L${P([31.75, 29.3]).map(f).join(" ")}Z" class="sc-sea"/>`;
-    b += `<path d="${line(REDSEA_W, P)}L${P([23.8, 35.6]).map(f).join(" ")}L${P([28.0, 35.6]).map(f).join(" ")}L${P([29.53, 35.0]).map(f).join(" ")}${line(SINAI.slice().reverse(), P).replace(/^M/, "L")}Z" class="sc-sea"/>`;
+    b += `<path d="${line(REDSEA_W, P)}L${P([21.9, 35.6]).map(f).join(" ")}L${P([28.0, 35.6]).map(f).join(" ")}L${P([29.53, 35.0]).map(f).join(" ")}${line(SINAI.slice().reverse(), P).replace(/^M/, "L")}Z" class="sc-sea"/>`;
     const [fx, fy] = P([29.47, 30.62]); b += `<ellipse cx="${f(fx)}" cy="${f(fy)}" rx="14" ry="6" class="sc-lake"/>`;
     b += `<path d="${line(NILE, P)}" class="sc-river"/><path d="${line(ROSETTA, P)}" class="sc-river-thin"/><path d="${line(DAMIETTA, P)}" class="sc-river-thin"/>`;
     b += txt(P([31.6, 30.1])[0], P([31.6, 30.1])[1], "Средиземное море", "sc-small sc-muted");
-    b += txt(P([26.2, 34.6])[0], P([26.2, 34.6])[1], "Красное море", "sc-small sc-muted", "middle");
-    b += txt(P([29.0, 33.8])[0], P([29.0, 33.8])[1], "Синай", "sc-small sc-muted", "middle");
+    b += txt(P([22.7, 31.2])[0], P([22.7, 31.2])[1], "Нубия", "sc-small sc-muted", "end");
+    b += txt(P([26.4, 34.95])[0], P([26.4, 34.95])[1], "Красное море", "sc-small sc-muted", "middle");
+    b += txt(P([29.6, 33.9])[0], P([29.6, 33.9])[1], "Синай", "sc-small sc-muted", "middle");
     b += txt(P([27.4, 31.55])[0], P([27.4, 31.55])[1], "Нил", "sc-small sc-muted");
     // врезка района Мемфиса
     const box = MEM, [bx0, by0] = P([box[1], box[2]]), [bx1, by1] = P([box[0], box[3]]);
     b += `<rect x="${f(bx0)}" y="${f(by0)}" width="${f(bx1 - bx0)}" height="${f(by1 - by0)}" class="sc-inset"/>` + txt(bx1 + 4, by0 + 10, "Мемфис и Файюм – на отдельной схеме", "sc-small");
-    const ins = [bx1 + 2, by0, 225, 14], nile = P([27.4, 31.55]), rs = P([26.2, 34.6]);
-    b += mapDots(places.filter(p => !p.memphis && p.lat), P, hi, W, H, [ins, [nile[0], nile[1] - 11, 24, 14], [bx0, by0, bx1 - bx0, by1 - by0], [rs[0] - 42, rs[1] - 11, 84, 14]]);
+    const ins = [bx1 + 2, by0, 225, 14], nile = P([27.4, 31.55]), rs = P([26.4, 34.95]), sn = P([29.6, 33.9]);
+    b += mapDots(places.filter(p => !p.memphis && p.lat), P, hi, W, H, [ins, [nile[0], nile[1] - 11, 24, 14], [bx0, by0, bx1 - bx0, by1 - by0], [rs[0] - 44, rs[1] - 11, 88, 14], [sn[0] - 18, sn[1] - 11, 36, 14]]);
     return svg(W, H, b, "Карта Египта", "scheme-map");
   }
   const MEM = [29.0, 30.2, 30.72, 31.45];
@@ -546,6 +550,187 @@
     return svg(W, H, b, "План Кахуна");
   }
 
+
+  /* ---------- Гробница в скале Долины царей (план) ---------- */
+  function kvTomb(m) {
+    const p = m.dims || {}, W = 600, H = 300; let b = DEFS + `<rect width="${W}" height="${H}" class="sc-rockfill"/>`;
+    const room = (x, y, w, h, cls = "sc-room") => `<rect x="${f(x)}" y="${f(y)}" width="${f(w)}" height="${f(h)}" class="${cls}"/>`;
+    const pillars = (x, y, w, h, n = 2) => { let r = ""; for (let i = 1; i <= n; i++) for (let j = 1; j <= 2; j++) r += `<rect x="${f(x + w * i / (n + 1) - 3)}" y="${f(y + h * j / 3 - 3)}" width="6" height="6" class="sc-pillar"/>`; return r; };
+    const lab = (x, y, t, a = "middle", c = "sc-small") => `<rect x="${f(a === "middle" ? x - t.length * 3.3 - 3 : a === "end" ? x - t.length * 6.6 - 6 : x - 3)}" y="${f(y - 11)}" width="${f(t.length * 6.6 + 6)}" height="15" rx="3" class="sc-labelbg"/>` + txt(x, y, t, c, a);
+    const kind = p.axis || "straight";
+    if (kind === "straight") {
+      const y = 140;
+      b += room(30, y - 9, 20, 18, "sc-stairbox") + room(50, y - 7, 110, 14) + room(160, y - 12, 26, 24) + room(186, y - 7, 70, 14);
+      b += room(256, y - 34, 70, 68) + pillars(256, y - 34, 70, 68) + room(326, y - 7, 90, 14) + room(416, y - 14, 30, 28);
+      b += room(446, y - 40, 110, 80) + pillars(446, y - 40, 110, 80, 3) + room(556, y - 16, 22, 32);
+      b += `<path d="M${173} ${y - 12}V${y + 12}" class="sc-wellmark"/>`;
+      b += lab(40, y + 30, "вход") + lab(105, y - 18, "коридоры уходят вниз") + lab(173, y + 34, "колодец") + lab(291, y + 50, "зал с колоннами") + lab(501, y + 56, "погребальная камера") + lab(567, y - 26, "кладовые", "end");
+    } else if (kind === "bent") {
+      const y = 90;
+      b += room(30, y - 9, 20, 18, "sc-stairbox") + room(50, y - 7, 150, 14) + room(200, y - 12, 26, 24) + room(226, y - 30, 80, 60) + pillars(226, y - 30, 80, 60);
+      b += room(296, y + 30, 14, 60) + `<path d="M260 ${y + 90}H${p.cartouche ? 420 : 400}" class="sc-none"/>`;
+      if (p.cartouche) b += `<rect x="230" y="${y + 90}" width="200" height="90" rx="45" class="sc-room"/>` + pillars(230, y + 90, 200, 90, 2);
+      else b += room(240, y + 90, 160, 80) + pillars(240, y + 90, 160, 80, 2);
+      b += lab(40, y + 30, "вход") + lab(125, y - 18, "крутые коридоры") + lab(213, y + 36, "колодец") + lab(266, y - 40, "зал с колоннами") + (p.cartouche ? lab(222, y + 128, "погребальная камера", "end") + lab(222, y + 146, "в форме картуша", "end") : lab(320, y + 192, "погребальная камера"));
+      b += lab(470, y + 40, "ось гробницы", "start") + lab(470, y + 56, "поворачивает", "start") + lab(470, y + 72, "под прямым углом", "start");
+    } else if (kind === "curved") {
+      b += `<path d="M40 60C220 40 420 40 470 120S420 260 280 250S120 180 200 140" class="sc-corridor-path"/>`;
+      b += room(180, 120, 46, 40) + pillars(180, 120, 46, 40, 1);
+      b += lab(48, 48, "вход") + lab(300, 30, "пять изогнутых коридоров со ступенями") + lab(200, 186, "погребальная камера");
+      b += lab(470, 210, "уходит в скалу по дуге", "start");
+    } else if (kind === "many") {
+      const y = 70;
+      b += room(30, y - 8, 30, 16, "sc-stairbox") + room(60, y - 22, 70, 44) + pillars(60, y - 22, 70, 44, 3) + room(130, y - 7, 60, 14);
+      b += room(190, y - 7, 14, 200) + room(190, y + 140, 370, 14) + room(190, y + 40, 370, 14);
+      for (let i = 0; i < 11; i++) { const x = 214 + i * 32; b += room(x, y + 22, 20, 16) + room(x, y + 58, 20, 16) + room(x, y + 122, 20, 16) + room(x, y + 158, 20, 16); }
+      b += lab(46, y + 30, "вход") + lab(95, y - 30, "зал с 16 колоннами") + lab(380, y + 200, "длинные коридоры с десятками комнат по бокам") + lab(380, y + 106, "больше 130 комнат – раскопана лишь малая часть");
+    } else { // small
+      const y = 140;
+      b += room(60, y - 10, 70, 20, "sc-stairbox") + room(130, y - 8, 100, 16) + room(230, y - 50, 150, 100);
+      b += lab(95, y + 34, "лестница") + lab(180, y - 18, "коридор") + lab(305, y + 70, p.label || "одна камера");
+    }
+    b += txt(W - 14, 18, p.length ? `длина по ходу ≈${f1(p.length)} м; план упрощён, без масштаба` : "план упрощён, без масштаба", "sc-small-light", "end");
+    return svg(W, H, b, `План: ${m.name}`);
+  }
+
+  /* ---------- Гробница Тутанхамона KV62, по размерам Картера ---------- */
+  function tutPlan(m) {
+    const W = 600, H = 360, k = 20, ox = 250, oy = 318; // метр -> пиксели; x на восток, y на север
+    const R = (x0, y0, w, h, cls = "sc-room") => `<rect x="${f(ox + x0 * k)}" y="${f(oy - (y0 + h) * k)}" width="${f(w * k)}" height="${f(h * k)}" class="${cls}"/>`;
+    let b = DEFS + `<rect width="${W}" height="${H}" class="sc-rockfill"/>`;
+    b += R(11.6, 0.2, 2.8, 1.7, "sc-stairbox") + R(3.6, 0.2, 8, 1.7);           // лестница, коридор
+    b += R(0, 0, 3.6, 7.9);                                                     // передняя
+    b += R(-3.1, -0.6, 2.6, 4.4);                                               // боковая
+    b += R(-1.5, 8.4, 6.4, 4);                                                  // погребальная
+    b += R(-0.9, 8.9, 5.2, 3, "sc-shrine");                                      // ковчеги
+    b += R(5.4, 8.1, 3.8, 4.8);                                                 // сокровищница
+    const L = (x, y, t, a = "middle", c = "sc-small-light") => txt(ox + x * k, oy - y * k, t, c, a);
+    b += L(13, -0.8, "лестница, 16 ступеней") + L(7.6, 2.6, "коридор 8 м") + L(1.8, 4.4, "передняя") + L(1.8, 3.6, "7,9 × 3,6 м") + L(-1.8, 1.4, "боковая", "middle");
+    b += L(1.7, 13.2, "погребальная камера 6,4 × 4 м") + L(1.7, 10.2, "4 ковчега и саркофаг", "middle", "sc-small") + L(7.3, 10.3, "сокровищница");
+    b += `<path d="M${ox + 0.2 * k} ${oy - 8.15 * k}H${ox + 3.4 * k}" class="sc-sealed"/>` + L(3.9, 7.6, "замурованная стена со статуями-стражами", "start");
+    b += `<path d="M${W - 30} 60V30" class="sc-scale-light" marker-end="url(#sc-arr)"/>` + txt(W - 30, 76, "С", "sc-small-light", "middle");
+    b += `<path d="M20 ${H - 22}H${20 + 5 * k}" class="sc-scale-light"/>` + txt(20, H - 28, "5 м", "sc-small-light");
+    b += txt(10, 18, "План по размерам Говарда Картера, упрощённо", "sc-small-light");
+    return svg(W, H, b, `План: ${m.name}`);
+  }
+
+  /* ---------- Заупокойный храм ---------- */
+  function templePlan(m) {
+    const p = m.dims || {}, W = 600, H = 300; let b = DEFS;
+    if (p.kind === "terraces") {
+      const g = 250; b += `<rect x="0" y="${g}" width="${W}" height="${H - g}" class="sc-ground"/><path d="M0 ${g}H${W}" class="sc-groundline"/>`;
+      b += `<path d="M470 ${g}L490 30L${W} 20V${g}Z" class="sc-rockfill"/>`;
+      [[120, 240, 30], [240, 360, 70], [340, 470, 110]].forEach(([x0, x1, h], i) => {
+        b += `<rect x="${x0}" y="${g - h}" width="${x1 - x0}" height="${h - (i ? [0, 30, 70][i] : 0)}" class="sc-stone"/>`;
+        for (let x = x0 + 6; x < x1 - 4; x += 12) b += `<rect x="${x}" y="${g - h + 4}" width="4" height="22" class="sc-pillar"/>`;
+      });
+      b += `<path d="M40 ${g}L120 ${g - 30}M180 ${g - 30}L240 ${g - 70}M300 ${g - 70}L340 ${g - 110}" class="sc-ramp"/>`;
+      b += `<rect x="452" y="${g - 140}" width="30" height="30" class="sc-room"/>`;
+      b += txt(70, g - 34, "пандус", "sc-label") + txt(180, g + 20, "нижняя терраса", "sc-label", "middle") + txt(300, g - 84, "средняя", "sc-label", "middle") + txt(400, g - 124, "верхняя", "sc-label", "middle") + txt(467, g - 150, "святилище в скале", "sc-small", "middle");
+      b += txt(10, 18, "Разрез с востока на запад, масштаб условный: колоннады на трёх террасах", "sc-small");
+      return svg(W, H, b, `Разрез: ${m.name}`);
+    }
+    if (p.kind === "abusimbel") {
+      const g = 262, s = 6.6, x0 = 60; // пикселей на метр
+      b += `<rect width="${W}" height="${H}" class="sc-sand"/><path d="M${x0 - 20} ${g}L${x0 - 6} 20H${x0 + 38 * s + 6}L${x0 + 38 * s + 20} ${g}Z" class="sc-rockfill"/>`;
+      b += `<rect x="${x0}" y="${g - 33 * s}" width="${38 * s}" height="${33 * s}" class="sc-stone"/>`;
+      // сидящая фигура: голова в платке, плечи, туловище и колени
+      const seat = (cx, headless) => {
+        const top = g - 20 * s;
+        let d = `M${f(cx - 3 * s)} ${g}V${f(top + 12 * s)}H${f(cx - 3.6 * s)}V${f(top + 7 * s)}H${f(cx - 1.6 * s)}`;
+        d += headless ? `V${f(top + 6 * s)}H${f(cx + 1.6 * s)}V${f(top + 7 * s)}` : `V${f(top + 4.5 * s)}L${f(cx - 2.2 * s)} ${f(top + 2 * s)}Q${f(cx)} ${f(top - 0.5 * s)} ${f(cx + 2.2 * s)} ${f(top + 2 * s)}L${f(cx + 1.6 * s)} ${f(top + 4.5 * s)}V${f(top + 7 * s)}`;
+        d += `H${f(cx + 3.6 * s)}V${f(top + 12 * s)}H${f(cx + 3 * s)}V${g}Z`;
+        return `<path d="${d}" class="sc-colossus"/>`;
+      };
+      [4.75, 14.25, 23.75, 33.25].forEach((c, i) => { b += seat(x0 + c * s, i === 1); });
+      b += `<ellipse cx="${f(x0 + 16.5 * s)}" cy="${g - 6}" rx="${f(1.6 * s)}" ry="6" class="sc-colossus"/>`;
+      b += `<rect x="${f(x0 + 18 * s)}" y="${f(g - 7 * s)}" width="${f(2 * s)}" height="${f(7 * s)}" class="sc-room"/>`;
+      const hx = x0 + 38 * s + 40; b += `<path d="M${hx} ${g}V${f(g - 1.7 * s)}" class="sc-human"/><circle cx="${hx}" cy="${f(g - 1.7 * s - 2)}" r="2.5" class="sc-human-head"/>` + txt(hx + 6, g - 4, "человек 1,7 м", "sc-small");
+      b += `<path d="M${x0 + 38 * s + 14} ${g}V${f(g - 20 * s)}" class="sc-dim" marker-start="url(#sc-arr)" marker-end="url(#sc-arr)"/>` + txt(x0 + 38 * s + 20, g - 10 * s, "статуи 20 м", "sc-dimtext");
+      b += `<path d="M${x0} ${g + 16}H${x0 + 38 * s}" class="sc-dim" marker-start="url(#sc-arr)" marker-end="url(#sc-arr)"/>` + txt(x0 + 19 * s, g + 31, "фасад 38 м, высота 33 м", "sc-dimtext", "middle");
+      b += txt(W - 10, 18, "Фасад Большого храма в масштабе", "sc-small", "end");
+      b += txt(x0 + 14.25 * s, g - 21 * s, "голова упала", "sc-small", "middle");
+      return svg(W, H, b, `Фасад: ${m.name}`);
+    }
+    // обычный храм: пилоны, дворы, гипостильный зал, святилище; дворец сбоку
+    const y = 150; b += `<rect width="${W}" height="${H}" class="sc-sand"/>`;
+    b += `<rect x="40" y="${y - 70}" width="18" height="140" class="sc-pylon"/><rect x="58" y="${y - 55}" width="120" height="110" class="sc-court"/>`;
+    b += `<rect x="178" y="${y - 60}" width="16" height="120" class="sc-pylon"/><rect x="194" y="${y - 50}" width="110" height="100" class="sc-court"/>`;
+    for (let i = 0; i < 6; i++) for (let j = 0; j < 4; j++) b += `<circle cx="${320 + i * 18}" cy="${y - 33 + j * 22}" r="4" class="sc-pillar-dot"/>`;
+    b += `<rect x="304" y="${y - 45}" width="116" height="90" class="sc-hall"/><rect x="420" y="${y - 32}" width="90" height="64" class="sc-court"/><rect x="510" y="${y - 18}" width="34" height="36" class="sc-room"/>`;
+    if (p.palace) b += `<rect x="64" y="${y + 62}" width="108" height="60" class="sc-palace"/>` + txt(118, y + 96, "дворец", "sc-small", "middle");
+    b += txt(49, y - 80, "пилон", "sc-small", "middle") + txt(118, y - 64, "первый двор", "sc-small", "middle") + txt(249, y - 58, "второй двор", "sc-small", "middle") + txt(362, y - 54, "зал с колоннами", "sc-small", "middle") + txt(527, y - 26, "святилище", "sc-small", "middle");
+    b += txt(10, 18, "План, упрощённо: с востока – вход через пилон, к западу – святилище", "sc-small");
+    return svg(W, H, b, `План: ${m.name}`);
+  }
+
+  /* ---------- Гробницы Долины царей в одном масштабе ---------- */
+  function kvCompare() {
+    const W = 640, H = 330, k = 1.6; let b = DEFS + `<rect width="${W}" height="${H}" class="sc-rockfill"/>`;
+    // KV20: 210 м по дуге; первый коридор 49,5 м
+    // ломаная дуга, растянутая так, чтобы её длина была 210 м в масштабе
+    const raw = [[0, 0], [49.5, -2], [88, 8], [112, 36], [114, 70], [96, 96], [66, 104], [44, 92]];
+    let len = 0; for (let i = 1; i < raw.length; i++) len += Math.hypot(raw[i][0] - raw[i - 1][0], raw[i][1] - raw[i - 1][1]);
+    const sc20 = 210 / len, pt = ([x, y]) => [30 + x * sc20 * k, 60 + y * sc20 * k];
+    const path20 = raw.map((q, i) => (i ? "L" : "M") + pt(q).map(f).join(" ")).join("");
+    b += `<path d="${path20}" class="sc-corridor-path"/>` + `<path d="M${pt(raw[0]).map(f).join(" ")}L${pt(raw[1]).map(f).join(" ")}" class="sc-first"/>`;
+    { const [ex, ey] = pt(raw[raw.length - 1]); b += `<rect x="${f(ex - 10)}" y="${f(ey - 8)}" width="20" height="16" class="sc-room"/>`; }
+    b += txt(30, 40, "KV20, Хатшепсут: ≈210 м по дуге", "sc-label-light") + txt(30, 84, "первый коридор – 49,5 м", "sc-small-light");
+    // KV17: 137 м
+    b += `<path d="M380 120H${f(380 + 137 * k * 0.95)}" class="sc-corridor-path"/>` + txt(380, 104, "KV17, Сети I: ≈137 м", "sc-label-light");
+    // KV62 по размерам: передняя 7,9 × 3,6 и т.д.
+    const ox = 400, oy = 260, R = (x0, y0, w, h) => `<rect x="${f(ox + x0 * k)}" y="${f(oy - (y0 + h) * k)}" width="${f(w * k)}" height="${f(h * k)}" class="sc-room"/>`;
+    b += R(3.6, 0.2, 10.8, 1.7) + R(0, 0, 3.6, 7.9) + R(-3.1, -0.6, 2.6, 4.4) + R(-1.5, 8.4, 6.4, 4) + R(5.4, 8.1, 3.8, 4.8);
+    b += txt(ox - 6, oy + 26, "KV62, Тутанхамон – вся гробница", "sc-label-light") + txt(ox - 6, oy + 42, "меньше первого коридора KV20", "sc-small-light");
+    b += `<path d="M20 ${H - 16}H${f(20 + 50 * k)}" class="sc-scale-light"/>` + txt(20, H - 22, "50 м", "sc-small-light");
+    b += txt(W - 10, 18, "Вид сверху, все гробницы в одном масштабе", "sc-small-light", "end");
+    return svg(W, H, b, "Гробницы Долины царей в одном масштабе");
+  }
+
+  /* ---------- Дейр эль-Медина: деревня строителей ---------- */
+  function deirMedina() {
+    const W = 560, H = 360; let b = `<rect width="${W}" height="${H}" class="sc-sand"/>`;
+    b += `<path d="M150 30L410 30L420 330L140 330Z" class="sc-wall-thick"/>`;
+    b += `<path d="M280 30V330" class="sc-street"/>`;
+    for (let r = 0; r < 12; r++) { b += `<rect x="${158 + r * 0.6}" y="${38 + r * 24}" width="112" height="20" class="sc-house"/><rect x="${290}" y="${38 + r * 24}" width="${118 - r * 0.2}" height="20" class="sc-house"/>`; }
+    b += `<path d="M430 40C470 120 490 220 470 330" class="sc-cliff"/><path d="M130 40C90 120 80 220 100 330" class="sc-cliff"/>`;
+    for (let i = 0; i < 7; i++) b += `<path d="M${470 + (i % 2) * 18} ${112 + i * 32}l8 -14l8 14z" class="sc-minipyr"/>`;
+    b += txt(280, 22, "главная улица", "sc-small", "middle") + txt(30, 120, "деревня", "sc-label") + txt(30, 136, "за стеной:", "sc-small") + txt(30, 152, "около 68 домов", "sc-small") + txt(30, 168, "по ≈70 м²", "sc-small");
+    b += txt(548, 50, "гробницы мастеров", "sc-small", "end") + txt(548, 64, "с пирамидками", "sc-small", "end");
+    b += txt(10, H - 8, "План, упрощённо, без масштаба", "sc-small");
+    return svg(W, H, b, "План Дейр эль-Медины");
+  }
+
+  /* ---------- Амарна ---------- */
+  function amarnaPlan() {
+    const W = 560, H = 440; let b = `<rect width="${W}" height="${H}" class="sc-sand"/>`;
+    b += `<path d="M0 0H120C100 120 140 300 110 ${H}H0Z" class="sc-water"/>` + txt(46, 220, "Нил", "sc-label", "middle", `transform="rotate(-90 46 220)"`);
+    b += `<path d="M470 20C430 140 520 260 470 420" class="sc-cliff"/>` + txt(462, 16, "скалы пустыни", "sc-small", "end");
+    const zone = (y, h, name, sub) => `<rect x="150" y="${y}" width="270" height="${h}" class="sc-field"/>` + txt(160, y + 18, name, "sc-label") + (sub ? txt(160, y + 34, sub, "sc-small") : "");
+    b += zone(30, 60, "Северный город", "Северный дворец – жилище царской семьи");
+    b += zone(130, 120, "Центральный город", "Большой дворец, храмы Атона,");
+    b += txt(160, 180, "«Дом царя», архив с письмами", "sc-small") + `<path d="M265 210V230" class="sc-passage"/>` + txt(272, 226, "мост над дорогой", "sc-small");
+    b += zone(290, 100, "Южный город", "дома вельмож и мастерская Тутмоса");
+    b += `<path d="M470 190C500 200 520 210 540 230" class="sc-passage"/>` + txt(548, 250, "Царское ущелье:", "sc-small", "end") + txt(548, 264, "гробница Эхнатона", "sc-small", "end");
+    [[455, 60], [495, 160], [460, 300], [500, 400], [140, 60], [135, 400]].forEach(([x, y]) => { b += `<rect x="${x - 3}" y="${y - 8}" width="6" height="12" class="sc-stela"/>`; });
+    b += txt(400, 420, "▮ – пограничные стелы", "sc-small");
+    b += `<path d="M150 ${H - 16}V${H - 24}" class="sc-none"/>` + txt(10, H - 8, "Город тянулся ≈13 км вдоль восточного берега; схема без масштаба", "sc-small");
+    return svg(W, H, b, "План Амарны");
+  }
+
+  /* ---------- Малкатта ---------- */
+  function malkataPlan() {
+    const W = 560, H = 340; let b = `<rect width="${W}" height="${H}" class="sc-sand"/>`;
+    b += `<rect x="300" y="80" width="230" height="200" rx="20" class="sc-water"/>` + txt(415, 190, "Биркет Хабу –", "sc-label", "middle") + txt(415, 206, "гавань и озеро для праздника", "sc-small", "middle");
+    b += `<rect x="60" y="120" width="120" height="110" class="sc-palace"/>` + txt(120, 170, "дворец царя", "sc-label", "middle") + txt(120, 186, "«Дом радости»", "sc-small", "middle");
+    b += `<rect x="190" y="200" width="80" height="60" class="sc-villa"/>` + txt(230, 280, "дворец Тейе", "sc-small", "middle");
+    b += `<rect x="70" y="40" width="80" height="50" class="sc-temple"/>` + txt(110, 30, "храм Амона", "sc-small", "middle");
+    b += `<rect x="190" y="110" width="70" height="60" class="sc-villa"/>` + txt(225, 100, "дома и залы", "sc-small", "middle");
+    b += `<path d="M180 175H300" class="sc-passage"/>` + txt(240, 194, "каналы к Нилу", "sc-small", "middle");
+    b += txt(10, H - 8, "Западный берег Фив; расположение упрощено, без масштаба", "sc-small");
+    return svg(W, H, b, "Схема Малкатты");
+  }
+
   /* ---------- Дейр эль-Баллас: расположение дворцов ---------- */
   function ballasPlan() {
     const W = 560, H = 380; let b = `<rect width="${W}" height="${H}" class="sc-sand"/>`;
@@ -587,5 +772,5 @@
     return `<svg class="scheme scheme-wide" viewBox="0 0 ${W} 300" role="img" aria-label="Дворцы в одном масштабе">${DEFS + b}</svg>`;
   }
 
-  window.Schemes = { monument, pyramidProfile, khufuSection, compare, complexPlan, palaceFacade, egyptMap, memphisMap, gizaPlan, kahunPlan, ballasPlan, palaceAreas };
+  window.Schemes = { monument, pyramidProfile, khufuSection, compare, complexPlan, palaceFacade, egyptMap, memphisMap, gizaPlan, kahunPlan, ballasPlan, palaceAreas, kvCompare, deirMedina, amarnaPlan, malkataPlan };
 })();

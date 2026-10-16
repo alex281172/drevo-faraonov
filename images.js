@@ -1335,5 +1335,469 @@ window.PD.images = {
   "artist": "Огюст Мариетт",
   "license": "общественное достояние",
   "page": "https://commons.wikimedia.org/wiki/File:Obelisk_of_Nubkheperre_Intef.jpg"
+ },
+ "ahmose1": {
+  "img": "img/ahmose1.jpg",
+  "w": 250,
+  "h": 333,
+  "artist": "Метрополитен-музей",
+  "license": "CC0",
+  "page": "https://commons.wikimedia.org/wiki/File:Head_of_Ahmose_I_MET_DP140853.jpg"
+ },
+ "ahmose-nefertari": {
+  "img": "img/ahmose-nefertari.jpg",
+  "w": 250,
+  "h": 375,
+  "artist": "Египетский музей Турина",
+  "license": "CC0",
+  "page": "https://commons.wikimedia.org/wiki/File:Statuette_of_Queen_Ahmose_Nefertari%2C_wood_-_Museo_Egizio_%28Turin%29_C_1369_p08.jpg"
+ },
+ "thutmose1": {
+  "img": "img/thutmose1.jpg",
+  "w": 330,
+  "h": 445,
+  "artist": "Mrgengar81",
+  "license": "CC BY-SA 4.0",
+  "page": "https://commons.wikimedia.org/wiki/File:Bust_of_new_kingdom_pharaoh_Thutmose_I.jpg"
+ },
+ "thutmose2": {
+  "img": "img/thutmose2.jpg",
+  "w": 500,
+  "h": 393,
+  "artist": "автор указан на Викискладе",
+  "license": "CC0",
+  "page": "https://commons.wikimedia.org/wiki/File:Stone_block_with_relief_at_Karnak_Temple_Thutmosis_II.jpg"
+ },
+ "hatshepsut": {
+  "img": "img/hatshepsut.jpg",
+  "w": 330,
+  "h": 528,
+  "artist": "Метрополитен-музей",
+  "license": "CC0",
+  "page": "https://commons.wikimedia.org/wiki/File:Large_Kneeling_Statue_of_Hatshepsut_MET_DP116049.jpg"
+ },
+ "senenmut": {
+  "img": "img/senenmut.jpg",
+  "w": 500,
+  "h": 750,
+  "artist": "ArchaiOptix",
+  "license": "CC BY-SA 4.0",
+  "page": "https://commons.wikimedia.org/wiki/File:Portrait_block_statue_of_Senenmut_and_Nefrura_01.jpg"
+ },
+ "thutmose3": {
+  "img": "img/thutmose3.jpg",
+  "w": 500,
+  "h": 667,
+  "artist": "Marsupium",
+  "license": "CC BY 4.0",
+  "page": "https://commons.wikimedia.org/wiki/File:Statue_of_the_Thutmosis_III_CG_42054-JE_36927_-_greywacke_-_Luxor_Museum_01.jpg"
+ },
+ "amenhotep2": {
+  "img": "img/amenhotep2.jpg",
+  "w": 330,
+  "h": 495,
+  "artist": "Bernard Dupont",
+  "license": "CC BY-SA 2.0",
+  "page": "https://commons.wikimedia.org/wiki/File:Statue_of_Amenhotep_II_%2836451482736%29.jpg"
+ },
+ "thutmose4": {
+  "img": "img/thutmose4.jpg",
+  "w": 330,
+  "h": 440,
+  "artist": "автор указан на Викискладе",
+  "license": "CC BY-SA 3.0",
+  "page": "https://commons.wikimedia.org/wiki/File:IV._Thotmesz.jpg"
+ },
+ "amenhotep3": {
+  "img": "img/amenhotep3.jpg",
+  "w": 250,
+  "h": 437,
+  "artist": "Метрополитен-музей",
+  "license": "CC0",
+  "page": "https://commons.wikimedia.org/wiki/File:Head_of_Amenhotep_III_MET_66.99.29_01.jpg"
+ },
+ "tiye": {
+  "img": "img/tiye.jpg",
+  "w": 250,
+  "h": 375,
+  "artist": "José Luiz",
+  "license": "CC BY-SA 4.0",
+  "page": "https://commons.wikimedia.org/wiki/File:Queen_Tiy_with_the_double_feather_crown_-_Neues_Museum_-_Berlin_-_Germany_2017.jpg"
+ },
+ "yuya": {
+  "img": "img/yuya.jpg",
+  "w": 500,
+  "h": 375,
+  "artist": "Radosław Botev",
+  "license": "CC BY 3.0 pl",
+  "page": "https://commons.wikimedia.org/wiki/File:Masks_of_Tjuyu_and_Yuya%2C_Egyptian_Museum_Cairo.jpg"
+ },
+ "akhenaten": {
+  "img": "img/akhenaten.jpg",
+  "w": 330,
+  "h": 435,
+  "artist": "Shonagon",
+  "license": "CC0",
+  "page": "https://commons.wikimedia.org/wiki/File:Am%C3%A9nophis_IV-Akh%C3%A9naton_-_Mus%C3%A9e_du_Louvre_Antiquit%C3%A9s_%C3%A9gyptiennes_E_27112_-_photo_2.jpg"
+ },
+ "nefertiti": {
+  "img": "img/nefertiti.jpg",
+  "w": 330,
+  "h": 483,
+  "artist": "Philip Pikart",
+  "license": "CC BY-SA 3.0",
+  "page": "https://commons.wikimedia.org/wiki/File:Nofretete_Neues_Museum.jpg"
+ },
+ "kiya": {
+  "img": "img/kiya.jpg",
+  "w": 330,
+  "h": 421,
+  "artist": "Метрополитен-музей",
+  "license": "CC0",
+  "page": "https://commons.wikimedia.org/wiki/File:Canopic_Jar_%28with_lid_30.8.54%29_MET_2836.jpg"
+ },
+ "meritaten": {
+  "img": "img/meritaten.jpg",
+  "w": 330,
+  "h": 213,
+  "artist": "Richard Mortel",
+  "license": "CC BY 2.0",
+  "page": "https://commons.wikimedia.org/wiki/File:Princess_Meritaten%2C_from_el-Amarna%2C_ca._1365-47_BCE%2C_Ny_Carlsberg_Glyptotek%2C_Copenhagen_%281%29_%2836024093800%29.jpg"
+ },
+ "tutankhamun": {
+  "img": "img/tutankhamun.jpg",
+  "w": 250,
+  "h": 312,
+  "artist": "Roland Unger",
+  "license": "общественное достояние",
+  "page": "https://commons.wikimedia.org/wiki/File:CairoEgMuseumTaaMaskMostlyPhotographed.jpg"
+ },
+ "ankhesenamun": {
+  "img": "img/ankhesenamun.jpg",
+  "w": 500,
+  "h": 635,
+  "artist": "AnnekeBart",
+  "license": "CC BY-SA 4.0",
+  "page": "https://commons.wikimedia.org/wiki/File:Ankhesenamun_offering_flowers_to_Tutankhamun.jpg"
+ },
+ "ay": {
+  "img": "img/ay.jpg",
+  "w": 330,
+  "h": 220,
+  "artist": "Дмитрий Денисенков",
+  "license": "общественное достояние",
+  "page": "https://commons.wikimedia.org/wiki/File:Ay_receiving_the_Gold_of_Honor.jpg"
+ },
+ "horemheb": {
+  "img": "img/horemheb.jpg",
+  "w": 330,
+  "h": 506,
+  "artist": "Египетский музей Турина",
+  "license": "CC0",
+  "page": "https://commons.wikimedia.org/wiki/File:Statue_of_king_Horemheb_with_the_god_Amun%2C_limestone_-_Museo_Egizio_Turin_C_768_p01.jpg"
+ },
+ "ramesses1": {
+  "img": "img/ramesses1.jpg",
+  "w": 250,
+  "h": 326,
+  "artist": "Diego Delso",
+  "license": "CC BY-SA 4.0",
+  "page": "https://commons.wikimedia.org/wiki/File:Tumba_de_Rams%C3%A9s_I%2C_Valle_de_las_Reyes%2C_Luxor%2C_Egipto%2C_2022-04-03%2C_DD_103.jpg"
+ },
+ "m-kv2": {
+  "img": "img/m-kv2.jpg",
+  "w": 250,
+  "h": 76,
+  "artist": "Египетский музей Турина",
+  "license": "CC0",
+  "page": "https://commons.wikimedia.org/wiki/File:Papyrus_with_the_plan_of_the_tomb_of_Ramesses_IV_on_the_recto_and_several_administrative_texts_on_the_verso_-_Museo_Egizio_%28Turin%29_C_1885_p03.jpg"
+ },
+ "m-kv9": {
+  "img": "img/m-kv9.jpg",
+  "w": 500,
+  "h": 314,
+  "artist": "Diego Delso",
+  "license": "CC BY-SA 4.0",
+  "page": "https://commons.wikimedia.org/wiki/File:Tumba_de_Rams%C3%A9s_V_y_de_Rams%C3%A9s_VI%2C_Valle_de_las_Reyes%2C_Luxor%2C_Egipto%2C_2022-04-03%2C_DD_48.jpg"
+ },
+ "seti1": {
+  "img": "img/seti1.jpg",
+  "w": 330,
+  "h": 587,
+  "artist": "YDdraigAur",
+  "license": "CC0",
+  "page": "https://commons.wikimedia.org/wiki/File:Relief_of_Seti_I.jpg"
+ },
+ "ramesses2": {
+  "img": "img/ramesses2.jpg",
+  "w": 250,
+  "h": 418,
+  "artist": "Andres Rueda",
+  "license": "CC BY 2.0",
+  "page": "https://commons.wikimedia.org/wiki/File:Colossal_bust_of_Ramesses_II%2C_the_Younger_Memnon_%281250_BC%29_-_British_Museum_%282%29.jpg"
+ },
+ "nefertari": {
+  "img": "img/nefertari.jpg",
+  "w": 330,
+  "h": 440,
+  "artist": "Onceinawhile",
+  "license": "CC BY-SA 4.0",
+  "page": "https://commons.wikimedia.org/wiki/File:Tomb_of_Nefertari_2022_30.jpg"
+ },
+ "m-qv66": {
+  "img": "img/m-qv66.jpg",
+  "w": 250,
+  "h": 167,
+  "artist": "Darer101",
+  "license": "CC BY-SA 4.0",
+  "page": "https://commons.wikimedia.org/wiki/File:Osiris%2C_Khepri_and_Nefertari_in_her_tomb.jpg"
+ },
+ "khaemwaset": {
+  "img": "img/khaemwaset.jpg",
+  "w": 500,
+  "h": 375,
+  "artist": "Dominic Perry",
+  "license": "CC0",
+  "page": "https://commons.wikimedia.org/wiki/File:Khaemwaset_Restoration_Text_on_Pyramid_of_Unas_3.jpg"
+ },
+ "merneptah": {
+  "img": "img/merneptah.jpg",
+  "w": 330,
+  "h": 648,
+  "artist": "автор указан на Викискладе",
+  "license": "CC BY-SA 4.0",
+  "page": "https://commons.wikimedia.org/wiki/File:Merneptah_Steli_%28cropped%29.jpg"
+ },
+ "seti2": {
+  "img": "img/seti2.jpg",
+  "w": 330,
+  "h": 501,
+  "artist": "Египетский музей Турина",
+  "license": "CC0",
+  "page": "https://commons.wikimedia.org/wiki/File:Statue_of_Seti_II%2C_sandstone_-_Museo_Egizio_Turin_C_1383_p01.jpg"
+ },
+ "twosret": {
+  "img": "img/twosret.jpg",
+  "w": 250,
+  "h": 370,
+  "artist": "Эмиль Присс д’Авенн",
+  "license": "CC BY 4.0",
+  "page": "https://commons.wikimedia.org/wiki/File:Queen_Tausret_%C3%89mile_Prisse_d%27Avennes.jpg"
+ },
+ "siptah": {
+  "img": "img/siptah.jpg",
+  "w": 500,
+  "h": 889,
+  "artist": "SpeakingArch",
+  "license": "CC BY-SA 4.0",
+  "page": "https://commons.wikimedia.org/wiki/File:Gold_Cartouche_of_King_Siptah%2C_c.1198-1193_BCE%2C_Thebes%2C_Ashmolean_Museum%2C_Oxford.jpg"
+ },
+ "setnakhte": {
+  "img": "img/setnakhte.jpg",
+  "w": 330,
+  "h": 385,
+  "artist": "Карл Рихард Лепсиус",
+  "license": "общественное достояние",
+  "page": "https://commons.wikimedia.org/wiki/File:Sethnakht_MedinetHabu_Lepsius.png"
+ },
+ "ramesses3": {
+  "img": "img/ramesses3.jpg",
+  "w": 330,
+  "h": 533,
+  "artist": "David Berkowitz",
+  "license": "CC BY 2.0",
+  "page": "https://commons.wikimedia.org/wiki/File:Statue_of_Ramesses_III_in_Luxor%2C_Egypt.jpg"
+ },
+ "ramesses4": {
+  "img": "img/ramesses4.jpg",
+  "w": 250,
+  "h": 250,
+  "artist": "Rama",
+  "license": "CC BY-SA 3.0 fr",
+  "page": "https://commons.wikimedia.org/wiki/File:Ramesses_IV-N_438-IMG_8065-gradient.jpg"
+ },
+ "ramesses6": {
+  "img": "img/ramesses6.jpg",
+  "w": 500,
+  "h": 992,
+  "artist": "автор указан на Викискладе",
+  "license": "общественное достояние",
+  "page": "https://commons.wikimedia.org/wiki/File:Ramesses_Vi_closeup.jpg"
+ },
+ "ramesses9": {
+  "img": "img/ramesses9.jpg",
+  "w": 500,
+  "h": 381,
+  "artist": "Метрополитен-музей",
+  "license": "CC0",
+  "page": "https://commons.wikimedia.org/wiki/File:Relief_of_Ramesses_IX_MET_59.51_01.jpg"
+ },
+ "ramesses11": {
+  "img": "img/ramesses11.jpg",
+  "w": 330,
+  "h": 660,
+  "artist": "Египетский музей Турина",
+  "license": "CC0",
+  "page": "https://commons.wikimedia.org/wiki/File:Royal_decree_of_Ramesses_XI_addressed_to_Panehesy%2C_viceroy_of_Nubia_-_Museo_Egizio_Turin_C_1896_p01.jpg"
+ },
+ "m-kv62": {
+  "img": "img/m-kv62.jpg",
+  "w": 500,
+  "h": 375,
+  "artist": "Romagy",
+  "license": "CC BY-SA 4.0",
+  "page": "https://commons.wikimedia.org/wiki/File:Tutankhamun_KV62_burial_chamber_and_sarcophagus.jpg"
+ },
+ "m-kv17": {
+  "img": "img/m-kv17.jpg",
+  "w": 330,
+  "h": 440,
+  "artist": "Carole Raddato",
+  "license": "CC BY-SA 2.0",
+  "page": "https://commons.wikimedia.org/wiki/File:KV17%2C_the_tomb_of_Pharaoh_Seti_I_of_the_Nineteenth_Dynasty%2C_Burial_chamber_J%2C_Valley_of_the_Kings%2C_Egypt_%2849846644117%29.jpg"
+ },
+ "m-kv20": {
+  "img": "img/m-kv20.jpg",
+  "w": 330,
+  "h": 442,
+  "artist": "Говард Картер",
+  "license": "общественное достояние",
+  "page": "https://commons.wikimedia.org/wiki/File:KV20_burial_chamber.jpg"
+ },
+ "m-kv34": {
+  "img": "img/m-kv34.jpg",
+  "w": 330,
+  "h": 247,
+  "artist": "a rancid amoeba",
+  "license": "CC BY-SA 2.0",
+  "page": "https://commons.wikimedia.org/wiki/File:Thutmose_III%27s_tomb.jpg"
+ },
+ "m-kv11": {
+  "img": "img/m-kv11.jpg",
+  "w": 500,
+  "h": 623,
+  "artist": "автор неизвестен",
+  "license": "общественное достояние",
+  "page": "https://commons.wikimedia.org/wiki/File:Harper%2C_Tomb_of_Ramses_III%2C_illustrated_in_1809.jpg"
+ },
+ "m-kv5": {
+  "img": "img/m-kv5.jpg",
+  "w": 500,
+  "h": 750,
+  "artist": "Keith",
+  "license": "общественное достояние",
+  "page": "https://commons.wikimedia.org/wiki/File:Entrance_of_Tomb_KV5_of_Ramesses_II%27s_sons.jpg"
+ },
+ "m-deir-bahari": {
+  "img": "img/m-deir-bahari.jpg",
+  "w": 500,
+  "h": 313,
+  "artist": "Diego Delso",
+  "license": "CC BY-SA 4.0",
+  "page": "https://commons.wikimedia.org/wiki/File:Templo_funerario_de_Hatshepsut%2C_Luxor%2C_Egipto%2C_2022-04-03%2C_DD_13.jpg"
+ },
+ "pl-valley-kings": {
+  "img": "img/pl-valley-kings.jpg",
+  "w": 330,
+  "h": 219,
+  "artist": "Francesco Gasparetti",
+  "license": "CC BY 2.0",
+  "page": "https://commons.wikimedia.org/wiki/File:Flickr_-_Gaspa_-_Valle_dei_Re%2C_panorama_%284%29.jpg"
+ },
+ "pl-deir-medina": {
+  "img": "img/pl-deir-medina.jpg",
+  "w": 500,
+  "h": 333,
+  "artist": "Andrew®",
+  "license": "CC BY 2.0",
+  "page": "https://commons.wikimedia.org/wiki/File:Deir_el-Medina_ruins_%282009a%29.jpg"
+ },
+ "pl-amarna": {
+  "img": "img/pl-amarna.jpg",
+  "w": 500,
+  "h": 141,
+  "artist": "автор не указан",
+  "license": "общественное достояние",
+  "page": "https://commons.wikimedia.org/wiki/File:Aten_temple%2C_Meryre%27s_tomb.jpg"
+ },
+ "pl-malkata": {
+  "img": "img/pl-malkata.jpg",
+  "w": 500,
+  "h": 333,
+  "artist": "en:User:Markh",
+  "license": "общественное достояние",
+  "page": "https://commons.wikimedia.org/wiki/File:Malkata_from_the_air.jpg"
+ },
+ "m-abu-simbel": {
+  "img": "img/m-abu-simbel.jpg",
+  "w": 500,
+  "h": 265,
+  "artist": "Diego Delso",
+  "license": "CC BY-SA 4.0",
+  "page": "https://commons.wikimedia.org/wiki/File:Templo_de_Rams%C3%A9s_II%2C_Abu_Simbel%2C_Egipto%2C_2022-04-02%2C_DD_03.jpg"
+ },
+ "pl-abu-simbel": {
+  "img": "img/pl-abu-simbel.jpg",
+  "w": 500,
+  "h": 328,
+  "artist": "Diego Delso",
+  "license": "CC BY-SA 4.0",
+  "page": "https://commons.wikimedia.org/wiki/File:Templo_de_Nefertari%2C_Abu_Simbel%2C_Egipto%2C_2022-04-02%2C_DD_153.jpg"
+ },
+ "pl-pi-ramesses": {
+  "img": "img/pl-pi-ramesses.jpg",
+  "w": 500,
+  "h": 333,
+  "artist": "Iri-en-achti",
+  "license": "общественное достояние",
+  "page": "https://commons.wikimedia.org/wiki/File:Kolossalstatue_Qantir.JPG"
+ },
+ "m-medinet-habu": {
+  "img": "img/m-medinet-habu.jpg",
+  "w": 500,
+  "h": 333,
+  "artist": "Vyacheslav Argenberg",
+  "license": "CC BY 4.0",
+  "page": "https://commons.wikimedia.org/wiki/File:Thebes%2C_Medinet_Habu%2C_Egypt%2C_Temple_of_Ramesses_III%2C_First_Pylon%2C_Ancient_Egypt.jpg"
+ },
+ "m-kv55": {
+  "img": "img/m-kv55.jpg",
+  "w": 330,
+  "h": 261,
+  "artist": "Эдвард Эйртон, 1907",
+  "license": "общественное достояние",
+  "page": "https://commons.wikimedia.org/wiki/File:KV55_coffin_in-situ.jpg"
+ },
+ "m-amarna-tomb": {
+  "img": "img/m-amarna-tomb.jpg",
+  "w": 500,
+  "h": 375,
+  "artist": "Aidan McRae Thomson",
+  "license": "CC BY-SA 2.0",
+  "page": "https://commons.wikimedia.org/wiki/File:Burial_Chamber_of_Akhenaten_at_Amarna_2017.jpg"
+ },
+ "pl-valley-queens": {
+  "img": "img/pl-valley-queens.jpg",
+  "w": 500,
+  "h": 333,
+  "artist": "Vyacheslav Argenberg",
+  "license": "CC BY 4.0",
+  "page": "https://commons.wikimedia.org/wiki/File:Thebes%2C_Luxor%2C_Egypt%2C_Valley_of_the_Queens.jpg"
+ },
+ "amenmesse": {
+  "img": "img/amenmesse.jpg",
+  "w": 330,
+  "h": 495,
+  "artist": "Метрополитен-музей",
+  "license": "CC0",
+  "page": "https://commons.wikimedia.org/wiki/File:Head_of_King_Amenmesse_Wearing_the_Blue_Crown_MET_34.2.2_EGDP011841.jpg"
+ },
+ "m-kv4": {
+  "img": "img/m-kv4.jpg",
+  "w": 500,
+  "h": 620,
+  "artist": "Экспедиция Лепсиуса; скан NYPL",
+  "license": "общественное достояние",
+  "page": "https://commons.wikimedia.org/wiki/File:Neues_Reich._Dynastie_XX._Theben_%28Thebes%29._Bab_el_Meluk_%28B%C3%AEb%C3%A2n_el-Mul%C3%BBk%29-_a._Grab_4%2C_am_Eingange_rechts%3B_b._Grab_18%2C_%C3%BCber_dem_Eingange_%28NYPL_b14291191-38415%29.tiff"
  }
 };

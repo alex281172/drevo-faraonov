@@ -357,6 +357,16 @@ footer .wrap { padding-block: 20px 28px; font: 13.5px var(--f-ui); color: var(--
 .sc-platform { fill: var(--stone); stroke: var(--stone-edge); stroke-width: 1.2; } .sc-pillar-dot { fill: var(--stone-edge); }
 .sc-area-min { fill: var(--gold-soft); stroke: var(--gold); stroke-width: 1.5; stroke-dasharray: 6 3; }
 .sc-inset-box { fill: var(--surface); stroke: var(--rule); } .sc-goddess { fill: var(--gold); stroke: var(--ink); stroke-width: .6; }
+.sc-labelbg { fill: var(--sand); opacity: .9; } .sc-stairbox { fill: var(--ground); stroke: var(--ink); stroke-width: 1; stroke-dasharray: 2 2; }
+.sc-wellmark { stroke: var(--blue); stroke-width: 2; stroke-dasharray: 3 2; } .sc-none { fill: none; stroke: none; }
+.sc-corridor-path { fill: none; stroke: var(--room); stroke-width: 9; stroke-linecap: round; } .sc-first { stroke: var(--gold); stroke-width: 4; fill: none; }
+.sc-scale-light { stroke: var(--ink); stroke-width: 2; fill: none; }
+.sc-small-light { fill: var(--ink); font: 11.5px var(--f-ui); paint-order: stroke; stroke: var(--sand); stroke-width: 3px; stroke-linejoin: round; }
+.sc-label-light { fill: var(--ink); font: 600 13px var(--f-ui); paint-order: stroke; stroke: var(--sand); stroke-width: 3px; stroke-linejoin: round; }
+.sc-shrine { fill: var(--gold-soft); stroke: var(--gold); stroke-width: 1.5; } .sc-sealed { stroke: var(--red); stroke-width: 3; stroke-dasharray: 4 3; }
+.sc-colossus { fill: var(--stone-edge); stroke: var(--brick-line); stroke-width: 1; } .sc-human { stroke: var(--ink); stroke-width: 2.5; } .sc-human-head { fill: var(--ink); }
+.sc-pylon { fill: var(--stone); stroke: var(--stone-edge); stroke-width: 1.5; } .sc-hall { fill: var(--ground); stroke: var(--rock-line); }
+.sc-street { stroke: var(--gold); stroke-width: 4; stroke-dasharray: 8 4; } .sc-minipyr { fill: var(--brick); stroke: var(--brick-line); } .sc-stela { fill: var(--ink); }
 .map-key { display: flex; flex-wrap: wrap; gap: 6px 18px; font: 13px var(--f-ui); color: var(--muted); margin-top: 8px; }
 .map-key i { display: inline-block; width: 10px; height: 10px; border-radius: 50%; margin-right: 6px; vertical-align: 0; }
 @media (max-width: 720px) {
@@ -416,6 +426,7 @@ footer .wrap { padding-block: 20px 28px; font: 13.5px var(--f-ui); color: var(--
 <script src="data-step4.js"></script>
 <script src="data-places.js"></script>
 <script src="data-step5.js"></script>
+<script src="data-step6.js"></script>
 <script src="data-media.js"></script>
 <script src="schemes.js"></script>
 <script src="images.js"></script>
@@ -587,7 +598,7 @@ footer .wrap { padding-block: 20px 28px; font: 13.5px var(--f-ui); color: var(--
     const mid = id => pos[id].y + g.f / 2;
     const bottom = id => pos[id].y + g.f + 60;
     const entry = id => pos[id].y - 30;
-    const edges = D.links.filter(l => pos[l.a] && pos[l.b]);
+    const edges = D.links.filter(l => pos[l.a] && pos[l.b] && !l.noTree);
 
     // точки входа: если к человеку приходит несколько линий сверху, разводим их
     const incoming = {}, outgoingFar = {};
@@ -790,7 +801,7 @@ footer .wrap { padding-block: 20px 28px; font: 13.5px var(--f-ui); color: var(--
   Object.entries(D.monuments).forEach(([id, m]) => { m.id = id; });
   Object.entries(D.places).forEach(([id, p]) => { p.id = id; });
   const SC = window.Schemes;
-  const MTYPE = { abydos: "царская гробница Абидоса", mastaba: "мастаба", gallery: "подземная галерейная гробница", enclosure: "заупокойная ограда", sarcophagus: "гробница в форме саркофага", stepmastaba: "двухступенчатая гробница", shaft: "шахтная гробница", rock: "скальная гробница", terrace: "террасный храм-гробница", saff: "сафф-гробница", vault: "сводчатая гробница", chamber: "гробница из нескольких камер" };
+  const MTYPE = { abydos: "царская гробница Абидоса", mastaba: "мастаба", gallery: "подземная галерейная гробница", enclosure: "заупокойная ограда", sarcophagus: "гробница в форме саркофага", stepmastaba: "двухступенчатая гробница", shaft: "шахтная гробница", rock: "скальная гробница", terrace: "террасный храм-гробница", saff: "сафф-гробница", vault: "сводчатая гробница", chamber: "гробница из нескольких камер", kv: "скальная гробница", tut: "скальная гробница", temple: "заупокойный храм" };
   const mtype = m => m.type === "pyramid" ? ((m.dims && m.dims.shape === "step") ? "ступенчатая пирамида" : (m.dims && m.dims.shape === "bent") ? "ломаная пирамида" : (m.dims && (m.dims.shape === "frustum" || m.dims.shape === "ruin")) ? "пирамида, недостроенная или разрушенная" : "пирамида") : (MTYPE[m.type] || "гробница");
   const KIND = { capital: "столица", city: "город", necropolis: "некрополь", mine: "рудник или гавань" };
   const KINDS = { capital: "Столицы", city: "Города", necropolis: "Некрополи", mine: "Рудники и гавани" };
@@ -830,7 +841,10 @@ footer .wrap { padding-block: 20px 28px; font: 13.5px var(--f-ui); color: var(--
     shaft: "разрез шахтной гробницы.", rock: "разрез скальной гробницы.",
     terrace: "разрез храма-гробницы от пандуса к скалам.", saff: "план сафф-гробницы сверху.",
     vault: "разрез гробницы гиксосского времени: сводчатая кирпичная камера в яме под двором дома и погребение ослов у входа.",
-    chamber: "план гробницы: четыре камеры подряд, последняя – погребальная, из известняка, с росписью."
+    chamber: "план гробницы: четыре камеры подряд, последняя – погребальная, из известняка, с росписью.",
+    kv: "план скальной гробницы сверху: от входа вниз уходят коридоры, через колодец – к залу с колоннами и погребальной камере.",
+    tut: "план гробницы Тутанхамона сверху по размерам Говарда Картера: лестница, коридор, передняя, боковая комната, погребальная камера с ковчегами и сокровищница.",
+    temple: "схема заупокойного храма."
   };
   // ссылки на места в текстах
   const stems = [];
@@ -851,7 +865,7 @@ footer .wrap { padding-block: 20px 28px; font: 13.5px var(--f-ui); color: var(--
     const img = m.img && D.images[m.img];
     const pl = D.places[m.place];
     const scheme = SC ? SC.monument(m) : "";
-    const cap = m.id === "m-khufu" ? SCAP.khufu : SCAP[m.type] || "";
+    const cap = m.schemeCap || (m.id === "m-khufu" ? SCAP.khufu : SCAP[m.type] || "");
     const dt = dimsText(m);
     const facts = [];
     if (pl) facts.push(["Где", `<a href="#pl-${pl.id}">${esc(pl.name)}</a>`]);
@@ -940,7 +954,11 @@ footer .wrap { padding-block: 20px 28px; font: 13.5px var(--f-ui); color: var(--
       : p.scheme === "kahun" ? [SC.kahunPlan(), "план города Кахун: стена делит его на квартал рабочих с маленькими домами и квартал больших усадеб; на возвышении – «акрополь»."]
       : p.scheme === "facade" ? [SC.palaceFacade(), "фасад дворца с выступами и нишами, такой же, как в нижней части сереха."]
       : p.scheme === "ballas" ? [SC.ballasPlan(), "расположение Дейр эль-Балласа: Северный дворец посреди полукруга скал, вокруг – дома посёлка, далеко к югу на холме – Южный дворец, наблюдательный помост с видом на Нил."]
-      : p.scheme === "palaces" ? [SC.palaceAreas(), "размеры дворцов в одном масштабе с основанием Великой пирамиды. Дворцы показаны квадратами той же площади; пунктир означает «не меньше»."] : null;
+      : p.scheme === "palaces" ? [SC.palaceAreas(), "размеры дворцов в одном масштабе с основанием Великой пирамиды. Дворцы показаны квадратами той же площади; пунктир означает «не меньше»."]
+      : p.scheme === "kvcompare" ? [SC.kvCompare(), "три гробницы Долины царей сверху в одном масштабе: изогнутая KV20 Хатшепсут длиной около 210 м, прямая KV17 Сети I около 137 м и крошечная KV62 Тутанхамона, которая целиком меньше первого коридора KV20."]
+      : p.scheme === "deirmedina" ? [SC.deirMedina(), "деревня строителей гробниц: стена, главная улица и около 68 домов по её сторонам, на склонах – гробницы мастеров с маленькими пирамидами."]
+      : p.scheme === "amarna" ? [SC.amarnaPlan(), "Амарна вдоль Нила: Северный, Центральный и Южный город, на востоке – скалы, Царское ущелье с гробницей Эхнатона и пограничные стелы."]
+      : p.scheme === "malkata" ? [SC.malkataPlan(), "дворцовый город Малкатта: дворец царя и дворец Тейе, храм Амона, жилые дома и огромная гавань Биркет Хабу, соединённая с Нилом каналами."] : null;
     const mons = monsAt(id);
     app.innerHTML = `
       <nav class="crumbs" aria-label="Путь"><a href="#">Лента времени</a><span>›</span><a href="#places">Места</a><span>›</span><span>${esc(p.name)}</span></nav>
