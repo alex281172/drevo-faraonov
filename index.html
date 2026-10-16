@@ -1,0 +1,1016 @@
+<title>Древо фараонов</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Forum&family=IBM+Plex+Sans+Condensed:wght@400;500;600&family=Literata:ital,opsz,wght@0,7..72,400;0,7..72,600;1,7..72,400&family=Noto+Sans+Egyptian+Hieroglyphs&display=swap">
+<style>
+/* Layout: звёздный «потолок гробницы» сверху, страница-известняк ниже; древо расписано, как стенной регистр */
+:root {
+  --bg: #EEEDE7;
+  --surface: #FAF9F5;
+  --ink: #1B2232;
+  --muted: #5A6172;
+  --line: #C9C5BA;
+  --rule: #DDDAD0;
+  --ceil: #16295A;
+  --ceil-ink: #EEE7D3;
+  --ceil-muted: #B9C0D6;
+  --star: #E3B652;
+  --gold: #946510;
+  --gold-soft: #EFE1BF;
+  --blue: #1F55A3;
+  --blue-soft: #DCE5F4;
+  --red: #A3392A;
+  --red-soft: #F3DCD5;
+  --hatch: #D2CEC2;
+  --shadow: 0 1px 2px rgba(27, 34, 50, .08), 0 4px 14px rgba(27, 34, 50, .06);
+  --f-display: "Forum", "Cormorant Garamond", Georgia, serif;
+  --f-body: "Literata", Georgia, "Times New Roman", serif;
+  --f-ui: "IBM Plex Sans Condensed", "Arial Narrow", system-ui, sans-serif;
+  --f-hiero: "Noto Sans Egyptian Hieroglyphs", "Segoe UI Historic", sans-serif;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --bg: #0E1527; --surface: #141D33; --ink: #E9E5DA; --muted: #A3A9B8; --line: #3A4766; --rule: #26314B;
+    --ceil: #0A173B; --ceil-ink: #EEE7D3; --ceil-muted: #9EA8C4; --star: #E3B652;
+    --gold: #DDB25A; --gold-soft: #3A3120; --blue: #8AAEEE; --blue-soft: #1D2B4D; --red: #E58370; --red-soft: #3F2420;
+    --hatch: #2C3754; --shadow: 0 1px 2px rgba(0,0,0,.3), 0 6px 18px rgba(0,0,0,.25);
+    color-scheme: dark;
+  }
+}
+:root[data-theme="dark"] {
+  --bg: #0E1527; --surface: #141D33; --ink: #E9E5DA; --muted: #A3A9B8; --line: #3A4766; --rule: #26314B;
+  --ceil: #0A173B; --ceil-ink: #EEE7D3; --ceil-muted: #9EA8C4; --star: #E3B652;
+  --gold: #DDB25A; --gold-soft: #3A3120; --blue: #8AAEEE; --blue-soft: #1D2B4D; --red: #E58370; --red-soft: #3F2420;
+  --hatch: #2C3754; --shadow: 0 1px 2px rgba(0,0,0,.3), 0 6px 18px rgba(0,0,0,.25);
+  color-scheme: dark;
+}
+
+* { box-sizing: border-box; }
+body { background: var(--bg); color: var(--ink); font-family: var(--f-body); font-size: 16px; line-height: 1.6; }
+a { color: var(--blue); text-underline-offset: 3px; }
+a:focus-visible, button:focus-visible, input:focus-visible { outline: 2px solid var(--gold); outline-offset: 2px; border-radius: 4px; }
+.wrap { max-width: 1080px; margin: 0 auto; padding-left: max(16px, env(safe-area-inset-left, 0px)); padding-right: max(16px, env(safe-area-inset-right, 0px)); }
+.hg { font-family: var(--f-hiero); font-style: normal; }
+
+/* ---------- Потолок ---------- */
+.ceiling {
+  background-color: var(--ceil);
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='120' height='80'%3E%3Cg fill='%23E3B652'%3E%3Cpath d='M18.0 10.5 L19.1 14.5 L23.2 14.3 L19.8 16.6 L21.2 20.4 L18.0 17.9 L14.8 20.4 L16.2 16.6 L12.8 14.3 L16.9 14.5Z'/%3E%3Cpath d='M78.0 42.0 L78.8 44.9 L81.8 44.8 L79.3 46.4 L80.4 49.2 L78.0 47.4 L75.6 49.2 L76.7 46.4 L74.2 44.8 L77.2 44.9Z'/%3E%3Cpath d='M44.0 63.0 L44.6 65.2 L46.9 65.1 L45.0 66.3 L45.8 68.4 L44.0 67.0 L42.2 68.4 L43.0 66.3 L41.1 65.1 L43.4 65.2Z' opacity='.7'/%3E%3Cpath d='M108.0 18.8 L108.6 21.1 L111.0 21.0 L109.0 22.3 L109.9 24.6 L108.0 23.1 L106.1 24.6 L107.0 22.3 L105.0 21.0 L107.4 21.1Z' opacity='.7'/%3E%3C/g%3E%3C/svg%3E");
+  color: var(--ceil-ink);
+  border-bottom: 3px solid var(--star);
+}
+.ceiling .wrap { display: flex; flex-wrap: wrap; align-items: center; gap: 12px 24px; padding-block: 18px 16px; }
+.brand { display: flex; align-items: baseline; gap: 12px; color: var(--ceil-ink); text-decoration: none; margin-right: auto; }
+.brand-mark { font-family: var(--f-hiero); font-size: 30px; color: var(--star); line-height: 1; }
+.brand-name { font-family: var(--f-display); font-size: 30px; letter-spacing: .02em; line-height: 1; }
+.brand-sub { font-family: var(--f-ui); font-size: 13px; color: var(--ceil-muted); letter-spacing: .04em; }
+.search { position: relative; flex: 1 1 260px; max-width: 360px; }
+.search input {
+  width: 100%; font: 15px var(--f-ui); padding: 9px 12px 9px 34px; border-radius: 8px;
+  border: 1px solid rgba(238,231,211,.28); background: rgba(10,20,50,.45); color: var(--ceil-ink);
+}
+.search input::placeholder { color: var(--ceil-muted); }
+.search svg { position: absolute; left: 11px; top: 50%; transform: translateY(-50%); width: 15px; height: 15px; stroke: var(--ceil-muted); fill: none; stroke-width: 2; }
+.results {
+  position: absolute; left: 0; right: 0; top: calc(100% + 6px); z-index: 20; list-style: none; margin: 0; padding: 6px;
+  background: var(--surface); color: var(--ink); border: 1px solid var(--line); border-radius: 10px; box-shadow: var(--shadow);
+}
+.results a { display: flex; justify-content: space-between; gap: 12px; padding: 8px 10px; border-radius: 6px; text-decoration: none; color: var(--ink); }
+.results a:hover, .results a.act { background: var(--blue-soft); }
+.results .r-sub { font: 13px var(--f-ui); color: var(--muted); white-space: nowrap; }
+.results .empty { padding: 8px 10px; font: 14px var(--f-ui); color: var(--muted); }
+
+/* ---------- Общие ---------- */
+main { padding-block: 28px 56px; }
+.crumbs { font: 14px var(--f-ui); color: var(--muted); display: flex; flex-wrap: wrap; gap: 6px; align-items: center; margin-bottom: 18px; }
+.crumbs a { color: var(--muted); }
+.kicker { font: 600 13px var(--f-ui); text-transform: uppercase; letter-spacing: .1em; color: var(--gold); margin: 0 0 6px; }
+h1, h2, h3 { font-family: var(--f-display); font-weight: 400; text-wrap: balance; line-height: 1.12; margin: 0; }
+h1 { font-size: clamp(36px, 6vw, 56px); }
+h2 { font-size: clamp(26px, 3.6vw, 34px); margin-bottom: 14px; }
+h3 { font-size: 22px; }
+p { margin: 0 0 14px; max-width: 68ch; }
+.lead { font-size: 19px; color: var(--muted); max-width: 60ch; margin-top: 10px; }
+.section { margin-top: 44px; }
+.ui { font-family: var(--f-ui); }
+.muted { color: var(--muted); }
+
+/* пометки достоверности */
+.cert { display: inline-flex; align-items: center; gap: 6px; font: 500 12.5px var(--f-ui); padding: 1px 8px 1px 6px; border-radius: 999px; border: 1px solid currentColor; white-space: nowrap; vertical-align: 2px; }
+.cert svg { width: 22px; height: 8px; }
+.cert line { stroke: currentColor; stroke-width: 2; }
+.c-proven { color: var(--ink); }
+.c-probable { color: var(--blue); }
+.c-disputed { color: var(--red); }
+
+/* ---------- Главная ---------- */
+.intro { display: grid; gap: 8px; }
+.stats { display: flex; flex-wrap: wrap; gap: 8px 22px; font: 15px var(--f-ui); color: var(--muted); margin-top: 6px; }
+.stats b { color: var(--ink); font-weight: 600; font-variant-numeric: tabular-nums; }
+.tl-box { margin-top: 30px; }
+.tl { position: relative; height: 66px; border-radius: 8px; overflow: hidden; border: 1px solid var(--line); background: var(--surface); }
+.seg {
+  position: absolute; top: 0; bottom: 0; border: 0; border-right: 1px solid var(--bg); padding: 0 6px; cursor: pointer;
+  font: 500 13px var(--f-ui); color: var(--ink); text-align: left; display: flex; align-items: center; overflow: hidden; white-space: nowrap;
+}
+.seg.kingdom { background: var(--gold-soft); }
+.seg.inter { background: repeating-linear-gradient(135deg, var(--hatch) 0 4px, transparent 4px 9px), var(--surface); }
+.seg.pre, .seg.late { background: var(--blue-soft); }
+.seg.done { box-shadow: inset 0 -5px 0 var(--gold); }
+.seg:hover { filter: brightness(.96); }
+.tl-axis { position: relative; height: 22px; font: 12px var(--f-ui); color: var(--muted); font-variant-numeric: tabular-nums; }
+.tl-axis span { position: absolute; top: 4px; transform: translateX(-50%); }
+.tl-axis span:first-child { transform: none; }
+.tl-axis span:last-child { transform: translateX(-100%); }
+.tl-key { display: flex; flex-wrap: wrap; gap: 6px 18px; font: 13px var(--f-ui); color: var(--muted); margin-top: 4px; }
+.tl-key i { display: inline-block; width: 18px; height: 11px; border-radius: 2px; vertical-align: -1px; margin-right: 6px; border: 1px solid var(--line); }
+
+.periods { list-style: none; margin: 0; padding: 0; border-top: 1px solid var(--rule); }
+.per { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1.35fr); gap: 8px 24px; padding: 16px 4px; border-bottom: 1px solid var(--rule); scroll-margin-top: 20px; transition: background .4s; }
+.per.flash { background: var(--gold-soft); }
+.per-name { font-family: var(--f-display); font-size: 23px; line-height: 1.2; }
+.per-years { display: block; font: 14px var(--f-ui); color: var(--muted); font-variant-numeric: tabular-nums; }
+.per-r { display: grid; gap: 6px; align-content: start; }
+.chips { display: flex; flex-wrap: wrap; gap: 6px; }
+.chip { font: 600 14px var(--f-ui); min-width: 40px; text-align: center; padding: 4px 10px; border-radius: 6px; text-decoration: none; letter-spacing: .03em; }
+a.chip { background: var(--ceil); color: var(--ceil-ink); }
+a.chip:hover { background: var(--blue); color: var(--surface); }
+span.chip { color: var(--muted); border: 1px dashed var(--line); font-weight: 500; }
+.per-note { font: 13.5px var(--f-ui); color: var(--muted); }
+
+/* ---------- Династия ---------- */
+.dyn-head { display: grid; gap: 4px; }
+.meta { display: grid; grid-template-columns: max-content minmax(0, 1fr); gap: 6px 18px; font: 15px var(--f-ui); margin: 18px 0 22px; }
+.meta dt { color: var(--muted); }
+.meta dd { margin: 0; }
+.trans { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 14px; margin-top: 8px; }
+.trans-card { background: var(--surface); border: 1px solid var(--rule); border-radius: 10px; padding: 16px 18px; min-width: 0; }
+.trans-card h3 { font-size: 20px; margin-bottom: 8px; }
+.trans-card p { font-size: 15px; margin-bottom: 10px; }
+.trans-card .go { font: 600 14px var(--f-ui); }
+.legend { display: flex; flex-wrap: wrap; gap: 8px 22px; font: 14px var(--f-ui); color: var(--muted); align-items: center; margin: 6px 0 14px; }
+.legend span { display: inline-flex; align-items: center; gap: 8px; }
+.legend svg { width: 34px; height: 12px; overflow: visible; }
+.tree-scroll { overflow-x: auto; overflow-y: hidden; background: var(--surface); border: 1px solid var(--rule); border-radius: 12px; -webkit-overflow-scrolling: touch; }
+.tree { position: relative; margin: 0 auto; }
+.tree svg.edges { position: absolute; inset: 0; overflow: visible; }
+.e { fill: none; stroke: var(--ink); stroke-width: 1.6; }
+.e.probable { stroke: var(--blue); stroke-dasharray: 7 4; }
+.e.disputed { stroke: var(--red); stroke-dasharray: 1.6 4.2; stroke-linecap: round; stroke-width: 2; }
+.e.succ { stroke: var(--gold); stroke-width: 1.4; stroke-dasharray: none; }
+.e.succ.probable { stroke-dasharray: 7 4; }
+.e.succ.disputed { stroke-dasharray: 1.6 4.2; stroke-width: 1.8; }
+.e.same { stroke: var(--red); stroke-dasharray: 1.6 4.2; stroke-width: 2; stroke-linecap: round; }
+.arrowhead { fill: var(--gold); }
+.ring { fill: var(--surface); stroke: var(--muted); stroke-width: 1.4; }
+.qmark { font: 600 12px var(--f-ui); fill: var(--red); }
+.samelabel { font: 600 12px var(--f-ui); fill: var(--red); }
+.tree-hint { font: 13px var(--f-ui); color: var(--muted); margin-top: 8px; }
+
+.leaf { position: absolute; display: flex; flex-direction: column; align-items: center; text-align: center; text-decoration: none; color: var(--ink); }
+.leaf .frame { position: relative; display: flex; flex-direction: column; background: var(--bg); box-shadow: var(--shadow); transition: transform .15s ease; }
+a.leaf:hover .frame { transform: translateY(-2px); }
+a.leaf:hover .nm { color: var(--blue); }
+.frame.serekh { border: 2px solid var(--gold); border-radius: 3px; }
+.frame.oval { border: 2px solid var(--blue); border-radius: 50%; overflow: hidden; }
+.frame img { width: 100%; flex: 1; min-height: 0; object-fit: cover; display: block; }
+.frame.serekh img, .frame.serekh .ph { border-radius: 1px 1px 0 0; }
+.frame.cartouche { border: 2px solid var(--gold); border-radius: 999px; padding: 3px; }
+.frame.cartouche img, .frame.cartouche .ph { border-radius: 999px; }
+.frame.cartouche .ph .hg { writing-mode: vertical-rl; text-orientation: upright; font-size: 16px; line-height: 1.05; }
+.frame.cartouche::after { content: ""; position: absolute; left: 14%; right: 14%; bottom: -9px; height: 3px; border-radius: 2px; background: var(--gold); }
+.frame.cartouche + .nm { margin-top: 15px; }
+.frame.cartouche .ord { right: -14px; }
+.mini-cart { position: relative; display: inline-flex; align-items: center; border: 2px solid var(--gold); border-radius: 999px; padding: 2px 20px 2px 16px; }
+.mini-cart .hg { font-size: 34px; line-height: 1.3; }
+.mini-cart::after { content: ""; position: absolute; right: -8px; top: 18%; bottom: 18%; width: 3px; border-radius: 2px; background: var(--gold); }
+.facade { height: 20%; flex: none; border-top: 2px solid var(--gold); background: repeating-linear-gradient(90deg, var(--gold) 0 2px, var(--gold-soft) 2px 7px); }
+.ph { flex: 1; display: grid; place-items: center; font-family: var(--f-display); font-size: 30px; color: var(--muted); background: repeating-linear-gradient(135deg, var(--rule) 0 1px, transparent 1px 7px); }
+.ph .hg { font-size: 26px; color: var(--ink); }
+.god { position: absolute; left: 50%; top: -27px; transform: translateX(-50%); font-family: var(--f-hiero); font-size: 24px; line-height: 1; color: var(--gold); white-space: nowrap; letter-spacing: 2px; }
+.ord { position: absolute; right: -9px; top: -9px; min-width: 24px; height: 24px; padding: 0 5px; border-radius: 999px; background: var(--ceil); color: var(--ceil-ink); font: 600 12px/24px var(--f-ui); text-align: center; font-variant-numeric: tabular-nums; }
+.nm { margin-top: 7px; font-family: var(--f-display); font-size: 18px; line-height: 1.15; }
+.sub { font: 12.5px var(--f-ui); color: var(--muted); line-height: 1.3; }
+.leaf.ext .frame { opacity: .72; border-style: dashed; }
+.leaf.stub .frame { opacity: .55; border-style: dashed; }
+.leaf.stub { cursor: default; }
+.leaf.here .frame { outline: 3px solid var(--star); outline-offset: 3px; }
+
+.rulers { list-style: none; margin: 0; padding: 0; display: grid; gap: 0; border-top: 1px solid var(--rule); }
+.rulers li { display: grid; grid-template-columns: 48px minmax(0, 1fr) minmax(0, 1.2fr); gap: 4px 16px; padding: 12px 4px; border-bottom: 1px solid var(--rule); align-items: baseline; }
+.rulers .n { font: 600 14px var(--f-ui); color: var(--gold); font-variant-numeric: tabular-nums; }
+.rulers .who a { font-family: var(--f-display); font-size: 21px; text-decoration: none; }
+.rulers .who .sub { display: block; }
+.rulers .what { font-size: 15px; color: var(--muted); }
+.note-box { background: var(--surface); border-left: 3px solid var(--line); padding: 14px 18px; border-radius: 0 8px 8px 0; margin-top: 18px; }
+.note-box h3 { font-size: 19px; margin-bottom: 6px; }
+.note-box p { font-size: 15px; margin: 0; }
+
+/* ---------- Карточка персонажа ---------- */
+.person-head { display: grid; gap: 2px; }
+.badges { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 12px; }
+.badge { font: 500 13px var(--f-ui); padding: 3px 10px; border-radius: 999px; background: var(--surface); border: 1px solid var(--rule); color: var(--muted); }
+.badge.k { color: var(--gold); border-color: var(--gold); }
+.badge.q { color: var(--blue); border-color: var(--blue); }
+.p-grid { display: grid; grid-template-columns: minmax(0, 360px) minmax(0, 1fr); gap: 32px; margin-top: 28px; align-items: start; }
+figure { margin: 0; }
+.fig-frame { background: var(--surface); border: 1px solid var(--rule); border-radius: 10px; padding: 10px; }
+.fig-frame img { width: 100%; height: auto; display: block; border-radius: 4px; }
+figcaption { font-size: 14px; color: var(--muted); margin-top: 10px; line-height: 1.5; }
+.credit { display: block; font: 12.5px var(--f-ui); margin-top: 4px; }
+.noimg { aspect-ratio: 4 / 3; display: grid; place-items: center; text-align: center; padding: 20px; font: 14px var(--f-ui); color: var(--muted); background: repeating-linear-gradient(135deg, var(--rule) 0 1px, transparent 1px 8px); border-radius: 6px; }
+.facts { display: grid; grid-template-columns: max-content minmax(0, 1fr); gap: 10px 20px; margin: 0; font-size: 15.5px; }
+.facts dt { font: 14px var(--f-ui); color: var(--muted); padding-top: 2px; }
+.facts dd { margin: 0; }
+.mini-serekh { display: inline-flex; flex-direction: column; align-items: center; gap: 2px; }
+.mini-serekh .g { font-family: var(--f-hiero); font-size: 26px; color: var(--gold); line-height: 1; }
+.mini-serekh .box { border: 2px solid var(--gold); border-radius: 2px; padding: 4px 12px 0; display: flex; flex-direction: column; align-items: center; }
+.mini-serekh .box .hg { font-size: 34px; line-height: 1.25; color: var(--ink); }
+.mini-serekh .box .f { width: 100%; height: 12px; margin-top: 4px; border-top: 2px solid var(--gold); background: repeating-linear-gradient(90deg, var(--gold) 0 2px, transparent 2px 7px); }
+.fam { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 16px 28px; }
+.fam h3 { font: 600 13px var(--f-ui); text-transform: uppercase; letter-spacing: .1em; color: var(--muted); margin-bottom: 8px; }
+.fam ul { list-style: none; margin: 0; padding: 0; display: grid; gap: 10px; }
+.fam li { display: grid; gap: 2px; }
+.fam .who { display: flex; flex-wrap: wrap; align-items: center; gap: 8px; }
+.fam .who a, .fam .who .plain { font-family: var(--f-display); font-size: 20px; text-decoration: none; }
+.fam .why { font: 14px var(--f-ui); color: var(--muted); }
+.bio p { font-size: 17px; }
+.pnav { display: flex; justify-content: space-between; gap: 12px; flex-wrap: wrap; margin-top: 36px; padding-top: 18px; border-top: 1px solid var(--rule); font: 15px var(--f-ui); }
+.pnav a { text-decoration: none; }
+.pnav .lbl { display: block; font-size: 12.5px; color: var(--muted); text-transform: uppercase; letter-spacing: .08em; }
+.pnav .nm2 { font-family: var(--f-display); font-size: 21px; }
+.pnav .r { text-align: right; margin-left: auto; }
+.ext-links { display: flex; flex-wrap: wrap; gap: 8px 18px; font: 15px var(--f-ui); }
+
+footer { border-top: 1px solid var(--rule); }
+footer .wrap { padding-block: 20px 28px; font: 13.5px var(--f-ui); color: var(--muted); display: grid; gap: 4px; }
+
+
+/* ---------- Разделы и схемы ---------- */
+.topnav { display: flex; flex-wrap: wrap; gap: 4px 16px; font: 500 14px var(--f-ui); order: 3; width: 100%; }
+.topnav a { color: var(--ceil-ink); text-decoration: none; opacity: .85; padding: 2px 0; border-bottom: 2px solid transparent; }
+.topnav a:hover, .topnav a.on { opacity: 1; border-bottom-color: var(--star); }
+@media (min-width: 900px) { .topnav { order: 0; width: auto; } }
+.plink { color: inherit; text-decoration-color: var(--gold); text-decoration-thickness: 1px; }
+.plink:hover { color: var(--blue); }
+.entry { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 14px; margin-top: 26px; }
+.entry a { display: grid; grid-template-columns: 72px minmax(0, 1fr); gap: 14px; align-items: center; background: var(--surface); border: 1px solid var(--rule); border-radius: 12px; padding: 14px 16px; text-decoration: none; color: var(--ink); }
+.entry a:hover { border-color: var(--gold); }
+.entry svg { width: 72px; height: 54px; }
+.entry b { display: block; font-family: var(--f-display); font-size: 22px; font-weight: 400; }
+.entry span { font: 14px var(--f-ui); color: var(--muted); }
+
+.scheme { width: 100%; height: auto; display: block; }
+.scheme-scroll { overflow-x: auto; background: var(--surface); border: 1px solid var(--rule); border-radius: 12px; padding: 10px 0; }
+.scheme-scroll .scheme-wide { width: auto; max-width: none; height: 210px; }
+.scheme-box { background: var(--surface); border: 1px solid var(--rule); border-radius: 12px; padding: 10px; }
+.scheme-cap { font: 14px var(--f-ui); color: var(--muted); margin: 8px 2px 0; max-width: 80ch; }
+.scheme-cap b { color: var(--ink); font-weight: 600; }
+
+.mon { background: var(--surface); border: 1px solid var(--rule); border-radius: 14px; padding: 18px 20px 20px; margin-top: 16px; scroll-margin-top: 16px; }
+.mon-head { display: flex; flex-wrap: wrap; align-items: baseline; justify-content: space-between; gap: 4px 16px; margin-bottom: 10px; }
+.mon-head h3 { font-size: 24px; }
+.mon-head h3 a { text-decoration: none; color: var(--ink); }
+.mon-head h3 a:hover { color: var(--blue); }
+.mon-type { font: 600 12.5px var(--f-ui); text-transform: uppercase; letter-spacing: .08em; color: var(--gold); }
+.mon-scheme .scheme + .scheme { margin-top: 12px; border-top: 1px solid var(--rule); padding-top: 12px; }
+.mon-grid { display: grid; grid-template-columns: minmax(0, 300px) minmax(0, 1fr); gap: 22px; margin-top: 16px; align-items: start; }
+.mon-grid.noimg-grid { grid-template-columns: minmax(0, 1fr); }
+.mon-fig figcaption b { color: var(--ink); font-weight: 600; }
+.mon-text .facts { font-size: 15px; margin-bottom: 12px; }
+.mon-text p { font-size: 16px; }
+.feat { margin: 0 0 12px; padding-left: 18px; font-size: 15px; display: grid; gap: 3px; }
+.feat li::marker { color: var(--gold); }
+.mons { display: grid; grid-template-columns: repeat(auto-fill, minmax(210px, 1fr)); gap: 12px; }
+.mm { display: grid; grid-template-rows: auto auto auto; gap: 4px; background: var(--surface); border: 1px solid var(--rule); border-radius: 10px; padding: 10px; text-decoration: none; color: var(--ink); min-width: 0; }
+.mm:hover { border-color: var(--gold); }
+.mm .scheme { background: var(--bg); border-radius: 6px; }
+.mm b { font-family: var(--f-display); font-weight: 400; font-size: 18px; line-height: 1.2; }
+.mm span { font: 12.5px var(--f-ui); color: var(--muted); }
+.map-grid { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: 16px; align-items: start; }
+.place-grid { display: grid; grid-template-columns: minmax(0, 360px) minmax(0, 1fr); gap: 28px; margin-top: 24px; align-items: start; }
+.palace { border-left: 3px solid var(--gold); padding: 6px 0 6px 14px; margin: 10px 0; }
+.palace h3 { font-size: 20px; margin-bottom: 4px; }
+.palace p { margin: 0; font-size: 16px; }
+.dyn-chips { display: flex; flex-wrap: wrap; gap: 6px; }
+.dyn-chips a, .dyn-chips span { font: 600 13px var(--f-ui); padding: 3px 10px; border-radius: 6px; text-decoration: none; }
+.dyn-chips a { background: var(--ceil); color: var(--ceil-ink); }
+.dyn-chips span { border: 1px dashed var(--line); color: var(--muted); font-weight: 500; }
+.kind-list { columns: 2 260px; column-gap: 28px; padding: 0; margin: 0; list-style: none; }
+.kind-list li { break-inside: avoid; padding: 6px 0; border-bottom: 1px solid var(--rule); }
+.kind-list a { font-family: var(--f-display); font-size: 19px; text-decoration: none; }
+.kind-list span { display: block; font: 13px var(--f-ui); color: var(--muted); }
+@media (max-width: 720px) {
+  .mon-grid, .map-grid, .place-grid { grid-template-columns: minmax(0, 1fr); }
+  .mon { padding: 14px 12px 16px; }
+}
+
+/* цвета схем */
+:root { --stone: #DCC79B; --stone-edge: #A48A55; --brick: #BC8A63; --brick-line: #8D6042; --rock: #D3CAB8; --rock-line: #B9AE98; --sand: #F1E9D6; --ground: #E3D7BD; --water: #A9C4E6; --water-line: #4F84C4; --land: #F2ECDF; --sea: #CADCF1; --room: #FFFFFF; }
+@media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) { --stone: #8A7852; --stone-edge: #C7AD78; --brick: #7E5639; --brick-line: #B07F5C; --rock: #343B4D; --rock-line: #4A5266; --sand: #1C2540; --ground: #222C48; --water: #2A4C80; --water-line: #78A8EC; --land: #18223A; --sea: #1A3160; --room: #0D1424; } }
+:root[data-theme="dark"] { --stone: #8A7852; --stone-edge: #C7AD78; --brick: #7E5639; --brick-line: #B07F5C; --rock: #343B4D; --rock-line: #4A5266; --sand: #1C2540; --ground: #222C48; --water: #2A4C80; --water-line: #78A8EC; --land: #18223A; --sea: #1A3160; --room: #0D1424; }
+.sc-stone { fill: var(--stone); stroke: var(--stone-edge); stroke-width: 1; }
+.sc-brickfill { fill: url(#sc-brickpat); stroke: var(--brick-line); stroke-width: 1; }
+.sc-brick { fill: var(--brick); } .sc-brickline { stroke: var(--brick-line); stroke-width: .6; fill: none; }
+.sc-rock { fill: var(--rock); } .sc-rockline { stroke: var(--rock-line); stroke-width: .7; }
+.sc-rockfill { fill: url(#sc-rockpat); } .sc-rockfill-raised { fill: var(--rock); stroke: var(--rock-line); }
+.sc-ground { fill: var(--ground); } .sc-groundline { stroke: var(--ink); stroke-width: 1.4; fill: none; }
+.sc-field { fill: var(--muted); fill-opacity: .13; stroke: var(--muted); stroke-width: 1; stroke-dasharray: 3 3; }
+.sc-ghost { fill: none; stroke: var(--muted); stroke-width: 1.2; stroke-dasharray: 5 4; }
+.sc-planned { fill: none; stroke: var(--gold); stroke-width: 1.5; stroke-dasharray: 7 4; }
+.sc-casing { fill: none; stroke: var(--stone-edge); stroke-width: 3; }
+.sc-shaft { stroke: var(--ink); stroke-width: 2; fill: none; }
+.sc-shaftfill, .sc-room { fill: var(--room); stroke: var(--ink); stroke-width: 1.2; }
+.sc-dim { stroke: var(--blue); stroke-width: 1; fill: none; } .sc-arrowhead { fill: var(--blue); }
+.sc-dimtext { fill: var(--blue); font: 600 12px var(--f-ui); }
+.sc-label { fill: var(--ink); font: 13px var(--f-ui); } .sc-small { fill: var(--muted); font: 11.5px var(--f-ui); }
+.sc-strong { font-weight: 600; } .sc-muted { fill: var(--muted); }
+.sc-scale { stroke: var(--ink); stroke-width: 1.5; fill: none; }
+.sc-passage { stroke: var(--red); stroke-width: 2.2; fill: none; } .sc-gallery { stroke: var(--red); stroke-width: 5; fill: none; }
+.sc-airshaft { stroke: var(--muted); stroke-width: 1; stroke-dasharray: 3 3; fill: none; } .sc-relief { fill: var(--stone-edge); }
+.sc-leader { stroke: var(--muted); stroke-width: .8; fill: none; }
+.sc-niche { stroke: var(--brick-line); stroke-width: 2; } .sc-chapel { fill: var(--gold-soft); stroke: var(--gold); } .sc-outline { stroke: var(--brick-line); stroke-width: 1; }
+.sc-sand { fill: var(--sand); } .sc-brickwall { fill: var(--brick); stroke: var(--brick-line); }
+.sc-brickwall-thick { fill: none; stroke: var(--brick); stroke-width: 10; } .sc-cellwall { stroke: var(--brick-line); stroke-width: 2; }
+.sc-grave { fill: var(--room); stroke: var(--brick-line); stroke-width: 1; } .sc-stair { stroke: var(--ink); stroke-width: 2; fill: none; }
+.sc-corridor { stroke: var(--room); stroke-width: 12; fill: none; } .sc-corridor-thin { stroke: var(--room); stroke-width: 6; }
+.sc-pillar { fill: var(--stone-edge); } .sc-ramp { stroke: var(--stone-edge); stroke-width: 6; } .sc-court { fill: var(--ground); stroke: var(--rock-line); }
+.sc-water { fill: var(--water); } .sc-temple { fill: var(--stone); stroke: var(--stone-edge); } .sc-causeway { stroke: var(--stone-edge); stroke-width: 4; fill: none; }
+.sc-faces { stroke: var(--stone-edge); stroke-width: 1; fill: none; } .sc-boat { stroke: var(--blue); stroke-width: 3; fill: none; }
+.sc-wall { fill: none; stroke: var(--brick); stroke-width: 2; stroke-dasharray: 6 3; }
+.sc-brickwall-face { fill: var(--brick); } .sc-niche-deep { fill: var(--brick-line); } .sc-niche-deeper { fill: var(--ink); opacity: .35; }
+.sc-serekh { fill: var(--sand); stroke: var(--gold); stroke-width: 3; }
+.sc-land { fill: var(--land); } .sc-sea { fill: var(--sea); } .sc-lake { fill: var(--water); }
+.sc-river { stroke: var(--water-line); stroke-width: 3; fill: none; stroke-linejoin: round; stroke-linecap: round; }
+.sc-river-thin { stroke: var(--water-line); stroke-width: 2; fill: none; }
+.sc-desert-edge { stroke: var(--gold); stroke-width: 1.2; stroke-dasharray: 4 4; fill: none; }
+.sc-inset { fill: none; stroke: var(--gold); stroke-width: 1.4; stroke-dasharray: 4 3; }
+.sc-dot { stroke: var(--surface); stroke-width: 1.5; }
+.sc-dot-capital { fill: var(--gold); } .sc-dot-city { fill: var(--blue); } .sc-dot-necropolis { fill: var(--ink); } .sc-dot-mine { fill: var(--red); }
+.sc-dot-on { stroke: var(--star); stroke-width: 3.5; }
+.sc-wall-thick { fill: none; stroke: var(--brick); stroke-width: 6; } .sc-house { fill: var(--room); stroke: var(--brick-line); stroke-width: .8; }
+.sc-villa { fill: var(--gold-soft); stroke: var(--brick-line); } .sc-palace { fill: var(--gold-soft); stroke: var(--gold); stroke-width: 2; }
+.map-key { display: flex; flex-wrap: wrap; gap: 6px 18px; font: 13px var(--f-ui); color: var(--muted); margin-top: 8px; }
+.map-key i { display: inline-block; width: 10px; height: 10px; border-radius: 50%; margin-right: 6px; vertical-align: 0; }
+@media (max-width: 720px) {
+  .per { grid-template-columns: minmax(0, 1fr); }
+  .p-grid { grid-template-columns: minmax(0, 1fr); gap: 22px; }
+  .p-grid figure { max-width: 420px; }
+  .rulers li { grid-template-columns: 40px minmax(0, 1fr); }
+  .rulers .what { grid-column: 2; }
+  .brand-name { font-size: 26px; }
+  .brand-sub { display: none; }
+  .search { max-width: none; }
+}
+@media (max-width: 639px) {
+  .nm { font-size: 16px; }
+  .sub { font-size: 11.5px; }
+  .god { font-size: 20px; top: -24px; }
+}
+@media (max-width: 639px) {
+  .scheme-box, .mon-scheme { overflow-x: auto; -webkit-overflow-scrolling: touch; }
+  .scheme-box .scheme-zoom, .mon-scheme .scheme-zoom { min-width: 620px; }
+  .scheme-box .scheme-map { min-width: 440px; }
+}
+@media (prefers-reduced-motion: reduce) {
+  * { transition: none !important; scroll-behavior: auto !important; }
+}
+</style>
+
+<header class="ceiling">
+  <div class="wrap">
+    <a class="brand" href="#">
+      <span class="brand-mark" aria-hidden="true">&#x13143;</span>
+      <span class="brand-name">Древо фараонов</span>
+      <span class="brand-sub">династии и семьи царей Египта</span>
+    </a>
+    <nav class="topnav" aria-label="Разделы"><a href="#">Лента времени</a><a href="#monuments">Пирамиды и гробницы</a><a href="#places">Места</a></nav>
+    <div class="search" role="search">
+      <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/></svg>
+      <input id="q" type="search" placeholder="Найти: Хуфу, Мернейт, Гиза…" autocomplete="off" aria-label="Поиск по имени, гробнице или месту">
+      <ul class="results" id="results" hidden></ul>
+    </div>
+  </div>
+</header>
+
+<main id="app" class="wrap"></main>
+
+<footer>
+  <div class="wrap">
+    <span>Даты приблизительные: для ранних эпох расхождения у разных учёных доходят до ста лет и больше.</span>
+    <span>Изображения – с Викисклада, автор и лицензия указаны под каждым снимком. Схемы нарисованы для этого сайта.</span>
+    <span id="upd"></span>
+  </div>
+</footer>
+
+<script src="data.js"></script>
+<script src="data-step3.js"></script>
+<script src="data-monuments.js"></script>
+<script src="data-step4.js"></script>
+<script src="data-places.js"></script>
+<script src="data-media.js"></script>
+<script src="schemes.js"></script>
+<script src="images.js"></script>
+<script>
+(function () {
+  const D = window.PD;
+  const app = document.getElementById("app");
+  const GLYPH = { horus: "\u{13143}", seth: "\u{130E9}" };
+  const CERT = {
+    proven: { t: "доказано", c: "c-proven", dash: "" },
+    probable: { t: "вероятно", c: "c-probable", dash: "6 3" },
+    disputed: { t: "спорно", c: "c-disputed", dash: "1.5 3.5" }
+  };
+  const esc = s => String(s == null ? "" : s).replace(/[&<>"]/g, ch => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" }[ch]));
+  const ROMAN = [[10, "X"], [9, "IX"], [5, "V"], [4, "IV"], [1, "I"]];
+  function roman(n) { let s = ""; for (const [v, r] of ROMAN) while (n >= v) { s += r; n -= v; } return s; }
+  function dynShort(k) { if (k === "mac") return "Македонская"; if (k === "ptol") return "Птолемеи"; if (k === "0") return "«0»"; return roman(+k); }
+  function dynName(k) { if (k === "mac") return "Македонская династия"; if (k === "ptol") return "Птолемеи"; if (k === "0") return "«Нулевая» династия"; return roman(+k) + " династия"; }
+  const years = (a, b) => `${Math.abs(a)}–${Math.abs(b)} до н.э.`;
+  const stepOf = k => { const p = D.periods.find(p => p.dyns.includes(k) && p.step); return p ? p.step : null; };
+
+  document.getElementById("upd").textContent = "Обновлено " + D.updated + ".";
+
+  function certPill(cert) {
+    const c = CERT[cert] || CERT.disputed;
+    return `<span class="cert ${c.c}"><svg viewBox="0 0 22 8" aria-hidden="true"><line x1="1" y1="4" x2="21" y2="4" ${c.dash ? `stroke-dasharray="${c.dash}"` : ""} stroke-linecap="round"/></svg>${c.t}</span>`;
+  }
+  function roleText(p) {
+    if (p.role) return p.role;
+    if (p.kind === "queen") return "царица";
+    if (p.kind === "regent") return "царица, регент";
+    if (p.kind === "prince") return "царевич";
+    if (p.kind === "princess") return "царевна";
+    return "царь";
+  }
+  const listJoin = arr => arr.length > 1 ? arr.slice(0, -1).join(", ") + " и " + arr[arr.length - 1] : arr.join("");
+
+  /* ---------- Главная ---------- */
+  function renderHome() {
+    const T0 = -3200, T1 = -30, span = T1 - T0;
+    const pct = x => ((x - T0) / span * 100);
+    const short = { predyn: "Додин.", early: "Раннее", old: "Древнее", fip: "ПП I", mk: "Среднее", sip: "ПП II", nk: "Новое", tip: "ПП III", late: "Поздний", ptol: "Птол." };
+    const people = Object.values(D.people).filter(p => !p.stub).length;
+    const filled = Object.keys(D.dynasties);
+    const segs = D.periods.map(p => {
+      const l = pct(p.from), w = pct(p.to) - l;
+      const done = p.dyns.some(d => D.dynasties[d]);
+      return `<button class="seg ${p.kind} ${done ? "done" : ""}" style="left:${l.toFixed(2)}%;width:${w.toFixed(2)}%" data-go="${p.id}" title="${esc(p.name)}, ${years(p.from, p.to)}">${w > 6.5 ? esc(short[p.id]) : ""}</button>`;
+    }).join("");
+    const ticks = [-3200, -2500, -2000, -1500, -1000, -500, -30].map(t => `<span style="left:${pct(t)}%">${Math.abs(t)}</span>`).join("");
+    const rows = D.periods.map(p => {
+      const chips = p.dyns.map(k => D.dynasties[k]
+        ? `<a class="chip" href="#d${k}" title="${esc(dynName(k))}">${dynShort(k)}</a>`
+        : `<span class="chip" title="${p.step ? "Появится на шаге " + p.step : "Пока без отдельной страницы"}">${dynShort(k)}</span>`).join("");
+      const done = p.dyns.filter(k => D.dynasties[k]);
+      const note = done.length
+        ? `Готово: ${listJoin(done.map(dynShort))}. Нажмите на династию, чтобы открыть её страницу.`
+        : p.step ? `Появится на шаге ${p.step}.` : esc(p.note || "");
+      return `<li class="per" id="per-${p.id}">
+        <div><span class="per-name">${esc(p.name)}</span><span class="per-years">ок. ${years(p.from, p.to)}</span></div>
+        <div class="per-r"><div class="chips">${chips}</div><div class="per-note">${note}</div></div>
+      </li>`;
+    }).join("");
+    app.innerHTML = `
+      <section class="intro">
+        <p class="kicker">Лента времени</p>
+        <h1>Тридцать веков царей</h1>
+        <p class="lead">Здесь собираются родословные египетских царей – от объединения страны около 3000 года до н.э. до смерти Клеопатры в 30 году до н.э. Каждая династия – отдельная страница с древом, каждый человек – карточка с историей.</p>
+        <div class="entry">
+          <a href="#monuments"><svg viewBox="0 0 72 54" aria-hidden="true"><rect width="72" height="54" rx="6" class="sc-sand"/><path d="M8 44L30 14L52 44Z" class="sc-stone"/><path d="M40 44L54 26L68 44Z" class="sc-stone"/><path d="M0 44H72" class="sc-groundline"/></svg><div><b>Пирамиды и гробницы</b><span>${Object.keys(D.monuments).length} гробниц со схемами в масштабе и снимками</span></div></a>
+          <a href="#places"><svg viewBox="0 0 72 54" aria-hidden="true"><rect width="72" height="54" rx="6" class="sc-land"/><path d="M40 52C38 40 42 30 36 22C32 16 34 8 30 2" class="sc-river"/><circle cx="31" cy="12" r="3.5" class="sc-dot sc-dot-capital"/><circle cx="38" cy="38" r="3.5" class="sc-dot sc-dot-necropolis"/></svg><div><b>Места</b><span>карта Египта, ${Object.keys(D.places).length} городов, некрополей и дворцов</span></div></a>
+        </div>
+        <div class="stats"><span>Династий на сайте: <b>${filled.filter(x => x !== "0").length}</b> из 31${filled.includes("0") ? " и «нулевая»" : ""}</span><span>Людей: <b>${people}</b></span><span>Связей: <b>${D.links.length}</b></span></div>
+      </section>
+      <section class="tl-box" aria-label="Шкала времени">
+        <div class="tl">${segs}</div>
+        <div class="tl-axis">${ticks}</div>
+        <div class="tl-key"><span><i style="background:var(--gold-soft)"></i>царства – единая страна</span><span><i style="background:repeating-linear-gradient(135deg,var(--hatch) 0 4px,transparent 4px 9px)"></i>переходные периоды – распад и смуты</span><span><i style="background:var(--blue-soft)"></i>до объединения и после Нового царства</span><span><i style="background:var(--surface);box-shadow:inset 0 -4px 0 var(--gold)"></i>уже на древе</span></div>
+      </section>
+      <section class="section">
+        <h2>Периоды и династии</h2>
+        <ul class="periods">${rows}</ul>
+      </section>
+      <section class="section">
+        <h2>Как читать древо</h2>
+        <p>Родство египетских царей часто восстанавливают по косвенным признакам, поэтому у каждой связи есть пометка. Цари изображены в серехе – рамке с фасадом дворца и богом наверху, как писали их имена в эту эпоху. Царицы – в овальной рамке.</p>
+        ${legendHTML()}
+      </section>`;
+    app.querySelectorAll(".seg").forEach(b => b.addEventListener("click", () => {
+      const el = document.getElementById("per-" + b.dataset.go);
+      if (!el) return;
+      el.scrollIntoView({ behavior: matchMedia("(prefers-reduced-motion: reduce)").matches ? "auto" : "smooth", block: "start" });
+      el.classList.add("flash"); setTimeout(() => el.classList.remove("flash"), 1200);
+    }));
+  }
+
+  function legendHTML() {
+    return `<div class="legend" role="list">
+      <span role="listitem"><svg viewBox="0 0 34 12"><path class="e proven" d="M1 6H33"/></svg>доказано</span>
+      <span role="listitem"><svg viewBox="0 0 34 12"><path class="e probable" d="M1 6H33"/></svg>вероятно</span>
+      <span role="listitem"><svg viewBox="0 0 34 12"><path class="e disputed" d="M1 6H33"/></svg>спорно</span>
+      <span role="listitem"><svg viewBox="0 0 34 12"><path class="e" d="M1 6H33"/><circle class="ring" cx="17" cy="6" r="4"/></svg>брак</span>
+      <span role="listitem"><svg viewBox="0 0 34 12"><path class="e succ" d="M1 6H28"/><path class="arrowhead" d="M27 2 L33 6 L27 10Z"/></svg>следующий правитель, родство неизвестно</span>
+    </div>`;
+  }
+
+  /* ---------- Династия ---------- */
+  function renderDyn(k) {
+    const d = D.dynasties[k];
+    const per = D.periods.find(p => p.id === d.period);
+    const transCard = (t, fallbackTitle) => {
+      if (!t) return "";
+      let go = "";
+      if (t.to) go = D.dynasties[t.to]
+        ? `<a class="go" href="#d${t.to}">${+t.to > +k ? "" : "← "}${esc(dynName(t.to))}${+t.to > +k ? " →" : ""}</a>`
+        : `<span class="go muted">${esc(dynName(t.to))} – появится на шаге ${stepOf(t.to) || "?"}</span>`;
+      return `<div class="trans-card"><h3>${esc(t.label || fallbackTitle)}</h3><p>${esc(t.text)}</p>${go}</div>`;
+    };
+    const rulers = d.order.map(id => {
+      const p = D.people[id];
+      return `<li><span class="n">${esc(p.order != null ? p.order : "")}</span>
+        <span class="who"><a href="#p-${id}">${esc(p.name)}</a><span class="sub">${esc(p.reign || "")}</span></span>
+        <span class="what">${esc(p.lead || "")}</span></li>`;
+    }).join("");
+    const notes = (d.notes || []).map(n => `<div class="note-box"><h3>${esc(n.title)}</h3><p>${esc(n.text)}</p></div>`).join("");
+    app.innerHTML = `
+      <nav class="crumbs" aria-label="Путь"><a href="#">Лента времени</a><span>›</span><span>${esc(per ? per.name : "")}</span><span>›</span><span>${esc(d.name)}</span></nav>
+      <header class="dyn-head">
+        <p class="kicker">${esc(per ? per.name : "")}</p>
+        <h1>${esc(d.name)}</h1>
+        <p class="lead">${esc(d.years)}</p>
+      </header>
+      <dl class="meta"><dt>Столица</dt><dd>${lp(d.capital)}</dd><dt>Где хоронили</dt><dd>${lp(d.burial)}</dd></dl>
+      ${d.intro.map(t => `<p>${lp(t)}</p>`).join("")}
+      <div class="trans">${transCard(d.prev, "Откуда пришла власть")}${transCard(d.next, "Куда ушла власть")}</div>
+      ${d.tree ? `<section class="section" aria-label="Родословное древо">
+        <h2>Древо</h2>
+        ${legendHTML()}
+        <div class="tree-scroll"><div class="tree" id="tree"></div></div>
+        <p class="tree-hint">Нажмите на человека, чтобы открыть его карточку. Номер в кружке – порядок правления. Цари в серехе – с хоровым именем, в картуше – с именем в овальной рамке. На узком экране древо прокручивается вбок.</p>
+      </section>` : ""}
+      ${monsOfDyn(k).length ? `<section class="section"><h2>Гробницы и пирамиды</h2><div class="mons">${monsOfDyn(k).map(monMini).join("")}</div></section>` : ""}
+      ${rulers || notes ? `<section class="section">
+        ${rulers ? `<h2>Правители по порядку</h2>${d.orderNote ? `<p class="muted order-note">${esc(d.orderNote)}</p>` : ""}<ul class="rulers">${rulers}</ul>` : ""}
+        ${notes}
+      </section>` : ""}`;
+    if (d.tree) drawTree(k);
+  }
+
+  function geom(cols, avail) {
+    if (window.innerWidth < 640) return { cw: 124, card: 114, f: 70, rh: 176, padX: 10, padTop: 40 };
+    const g = { cw: 180, card: 150, f: 94, rh: 208, padX: 26, padTop: 44 };
+    if (cols > 1 && avail) g.cw = Math.max(164, Math.min(180, (avail - 2 * g.padX - g.card) / (cols - 1)));
+    return g;
+  }
+
+  function drawTree(k, highlight) {
+    const host = document.getElementById("tree");
+    if (!host) return;
+    const t = D.dynasties[k].tree;
+    if (!t) return;
+    const maxC = Math.max(...t.nodes.map(n => n[1])), maxR = Math.max(...t.nodes.map(n => n[2]));
+    const g = geom(maxC + 1, host.parentElement ? host.parentElement.clientWidth - 2 : 0);
+    const W = Math.round(g.padX * 2 + maxC * g.cw + g.card);
+    const H = g.padTop + maxR * g.rh + g.f + 76;
+    const pos = {};
+    t.nodes.forEach(([id, c, r]) => { pos[id] = { x: Math.round(g.padX + c * g.cw), y: g.padTop + r * g.rh, c, r }; });
+    const cx = id => pos[id].x + g.card / 2;
+    const mid = id => pos[id].y + g.f / 2;
+    const bottom = id => pos[id].y + g.f + 60;
+    const entry = id => pos[id].y - 30;
+    const edges = D.links.filter(l => pos[l.a] && pos[l.b]);
+
+    // точки входа: если к человеку приходит несколько линий сверху, разводим их
+    const incoming = {}, outgoingFar = {};
+    edges.filter(e => e.type !== "spouse").forEach(e => {
+      (incoming[e.b] = incoming[e.b] || []).push(e);
+      if (pos[e.b].r - pos[e.a].r > 1) (outgoingFar[e.a] = outgoingFar[e.a] || []).push(e);
+    });
+    Object.values(incoming).forEach(arr => {
+      arr.sort((p, q) => cx(p.a) - cx(q.a));
+      arr.forEach((e, i) => { e._off = arr.length > 1 ? (i - (arr.length - 1) / 2) * 18 : 0; });
+    });
+    Object.values(outgoingFar).forEach(arr => arr.forEach((e, i) => { e._bus = i * 7; }));
+    // дорожки: горизонтальные отрезки от разных родителей между двумя рядами не накладываются друг на друга
+    const spans = {};
+    edges.filter(e => e.type !== "spouse" && pos[e.b].r - pos[e.a].r === 1).forEach(e => {
+      const x2 = cx(e.b) + (e._off || 0), lo = Math.min(cx(e.a), x2), hi = Math.max(cx(e.a), x2);
+      const key = pos[e.a].r + "|" + e.a;
+      const sp = spans[key] || (spans[key] = { row: pos[e.a].r, src: e.a, lo, hi });
+      sp.lo = Math.min(sp.lo, lo); sp.hi = Math.max(sp.hi, hi);
+    });
+    const laneOf = {}, byRow = {};
+    Object.values(spans).forEach(sp => (byRow[sp.row] = byRow[sp.row] || []).push(sp));
+    Object.values(byRow).forEach(list => {
+      list.sort((a, b) => a.lo - b.lo);
+      const lanes = [];
+      list.forEach(sp => {
+        let i = lanes.findIndex(end => end < sp.lo - 4);
+        if (i < 0) { i = lanes.length; lanes.push(sp.hi); } else lanes[i] = sp.hi;
+        laneOf[sp.src] = i;
+      });
+    });
+    const laneStep = window.innerWidth < 640 ? 4 : 6;
+    // браки через головы соседей по ряду – дугами на разной высоте
+    const arcLanes = {};
+    edges.forEach(e => { e._arc = null; });
+    edges.filter(e => e.type === "spouse" && pos[e.a].r === pos[e.b].r && Math.abs(pos[e.a].c - pos[e.b].c) > 1)
+      .sort((p, q) => Math.abs(pos[p.a].c - pos[p.b].c) - Math.abs(pos[q.a].c - pos[q.b].c))
+      .forEach(e => {
+        const lo = Math.min(pos[e.a].c, pos[e.b].c), hi = Math.max(pos[e.a].c, pos[e.b].c), lanes = arcLanes[pos[e.a].r] || (arcLanes[pos[e.a].r] = []);
+        let i = 0; while (lanes[i] && lanes[i].some(([a, b]) => lo <= b && hi >= a)) i++;
+        (lanes[i] = lanes[i] || []).push([lo, hi]); e._arc = i;
+      });
+
+    let svg = `<svg class="edges" width="${W}" height="${H}" viewBox="0 0 ${W} ${H}" aria-hidden="true">
+      <defs><marker id="arr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path class="arrowhead" d="M0 0 L10 5 L0 10Z"/></marker></defs>`;
+    edges.forEach(e => {
+      const cls = e.type === "succ" ? `e succ ${e.cert}` : e.type === "same" ? "e same" : `e ${e.cert}`;
+      if (e.type === "spouse") {
+        if (pos[e.a].r !== pos[e.b].r) return; // браки между поколениями видны в карточках
+        const L = cx(e.a) < cx(e.b) ? e.a : e.b, R = L === e.a ? e.b : e.a;
+        if (e._arc != null) {
+          // супруги не рядом: линия обходит соседей сверху, чтобы не проходить сквозь них
+          const xa = cx(L) + 12 + e._arc * 8, xb = cx(R) - g.f / 2 + 10 + e._arc * 8, yt = pos[L].y - 12 - e._arc * 9;
+          svg += `<path class="${cls}" d="M${xa} ${mid(L)}V${yt}H${xb}V${mid(R)}"/><circle class="ring" cx="${(xa + xb) / 2}" cy="${yt}" r="4.5"/>`;
+          if (e.cert === "disputed") svg += `<text class="qmark" x="${(xa + xb) / 2}" y="${yt - 8}" text-anchor="middle">?</text>`;
+          return;
+        }
+        const x1 = cx(L) + g.f / 2 + 4, x2 = cx(R) - g.f / 2 - 4, y = mid(L);
+        svg += `<path class="${cls}" d="M${x1} ${y}H${x2}"/><circle class="ring" cx="${(x1 + x2) / 2}" cy="${y}" r="4.5"/>`;
+        if (e.cert === "disputed") svg += `<text class="qmark" x="${(x1 + x2) / 2}" y="${y - 9}" text-anchor="middle">?</text>`;
+        return;
+      }
+      if (pos[e.b].r <= pos[e.a].r) return;
+      const far = pos[e.b].r - pos[e.a].r > 1;
+      const x1 = cx(e.a), y1 = bottom(e.a), x2 = cx(e.b) + (e._off || 0), y2 = entry(e.b);
+      const bus = far ? y1 + 10 + (e._bus || 0) : Math.max(y1 + 3, Math.round(y2 - 8 - Math.min(3, laneOf[e.a] || 0) * laneStep));
+      const d = x1 === x2 ? `M${x1} ${y1}V${y2}` : `M${x1} ${y1}V${bus}H${x2}V${y2}`;
+      svg += `<path class="${cls}" d="${d}" ${e.type === "succ" ? 'marker-end="url(#arr)"' : ""}/>`;
+      if (e.type === "same") svg += `<text class="samelabel" x="${x2 + 8}" y="${(y1 + y2) / 2 + 4}">одно лицо?</text>`;
+      else if (e.cert === "disputed") svg += `<text class="qmark" x="${x2 + 6}" y="${y2 - 4}">?</text>`;
+    });
+    svg += `</svg>`;
+
+    const leaves = t.nodes.map(([id]) => leafHTML(id, k, g, pos[id], highlight)).join("");
+    host.style.width = W + "px";
+    host.style.height = H + "px";
+    host.innerHTML = svg + leaves;
+    // если древо шире экрана, показываем нужную часть: выбранного человека или середину
+    const box = host.parentElement;
+    if (box && box.scrollWidth > box.clientWidth) {
+      const target = highlight && pos[highlight] ? cx(highlight) : W / 2;
+      box.scrollLeft = Math.max(0, target - box.clientWidth / 2);
+    }
+  }
+
+  function leafHTML(id, k, g, at, highlight) {
+    const p = D.people[id];
+    const ext = p.dyn !== k;
+    const img = p.img && D.images[p.img];
+    const isKing = p.kind === "king";
+    const frameCls = isKing ? (p.frame === "cartouche" ? "cartouche" : "serekh") : "oval";
+    const god = frameCls === "serekh" ? `<span class="god" aria-hidden="true">${p.god === "both" ? GLYPH.horus + GLYPH.seth : (GLYPH[p.god] || GLYPH.horus)}</span>` : "";
+    const inner = img
+      ? `<img src="${esc(img.img)}" alt="" loading="lazy" style="object-position:${esc(p.focus || "50% 40%")}">`
+      : `<span class="ph">${p.hiero ? `<span class="hg">${p.hiero}</span>` : esc(p.name.replace(/[«»]/g, "").charAt(0))}</span>`;
+    const facade = frameCls === "serekh" ? `<span class="facade"></span>` : "";
+    const fw = frameCls === "cartouche" ? Math.round(g.f * 0.78) : g.f;
+    const ord = !ext && !p.stub && p.order != null ? `<span class="ord">${esc(p.order)}</span>` : "";
+    const sub = p.stub ? `${dynName(p.dyn)}, шаг ${stepOf(p.dyn) || "?"}` : ext ? dynName(p.dyn) : roleText(p);
+    const cls = ["leaf", ext ? "ext" : "", p.stub ? "stub" : "", highlight === id ? "here" : ""].join(" ");
+    const style = `left:${at.x}px;top:${at.y}px;width:${g.card}px`;
+    const body = `<span class="frame ${frameCls}" style="width:${fw}px;height:${g.f}px">${god}${inner}${facade}${ord}</span>
+      <span class="nm">${esc(p.name)}</span><span class="sub">${esc(sub)}</span>`;
+    return p.stub
+      ? `<div class="${cls}" style="${style}" title="${esc(p.lead || "")}">${body}</div>`
+      : `<a class="${cls}" style="${style}" href="#p-${id}" aria-label="${esc(p.name + ", " + roleText(p))}">${body}</a>`;
+  }
+
+  /* ---------- Карточка ---------- */
+  function relations(id) {
+    const g = { parents: [], spouses: [], children: [], before: [], after: [], same: [] };
+    D.links.forEach(l => {
+      if (l.type === "parent" && l.b === id) g.parents.push([l.a, l]);
+      if (l.type === "parent" && l.a === id) g.children.push([l.b, l]);
+      if (l.type === "spouse" && (l.a === id || l.b === id)) g.spouses.push([l.a === id ? l.b : l.a, l]);
+      if (l.type === "succ" && l.b === id) g.before.push([l.a, l]);
+      if (l.type === "succ" && l.a === id) g.after.push([l.b, l]);
+      if (l.type === "same" && (l.a === id || l.b === id)) g.same.push([l.a === id ? l.b : l.a, l]);
+    });
+    return g;
+  }
+
+  function relItem([oid, l]) {
+    const o = D.people[oid];
+    const name = o.stub
+      ? `<span class="plain">${esc(o.name)}</span><span class="muted ui" style="font-size:13px">${esc(dynName(o.dyn))}, шаг ${stepOf(o.dyn) || "?"}</span>`
+      : `<a href="#p-${oid}">${esc(o.name)}</a>`;
+    return `<li><span class="who">${name}${certPill(l.cert)}</span>${l.note ? `<span class="why">${esc(l.note)}</span>` : ""}</li>`;
+  }
+
+  function renderPerson(id) {
+    const p = D.people[id];
+    const d = D.dynasties[p.dyn];
+    const per = d && D.periods.find(x => x.id === d.period);
+    const img = p.img && D.images[p.img];
+    const rel = relations(id);
+    const groups = [
+      ["Родители", rel.parents], ["Супруги", rel.spouses], ["Дети", rel.children],
+      ["Правил после", rel.before], ["Следующий правитель", rel.after], ["Возможно, то же лицо", rel.same]
+    ].filter(([, arr]) => arr.length);
+    const fam = groups.length
+      ? `<div class="fam">${groups.map(([t, arr]) => `<div><h3>${t}</h3><ul>${arr.map(relItem).join("")}</ul></div>`).join("")}</div>`
+      : `<p class="muted">Родственные связи этого человека неизвестны.</p>`;
+
+    const fig = img
+      ? `<figure><div class="fig-frame"><img src="${esc(img.img)}" alt="${esc(p.imgCaption || p.name)}" width="${img.w}" height="${img.h}"></div>
+          <figcaption>${esc(p.imgCaption || "")}<span class="credit">Фото: ${esc(img.artist || "автор указан на странице файла")} · ${esc(img.license || "")} · <a href="${esc(img.page)}" target="_blank" rel="noopener">файл на Викискладе</a></span></figcaption></figure>`
+      : `<figure><div class="fig-frame"><div class="noimg">Памятников с изображением или именем этого человека его времени не найдено.</div></div></figure>`;
+
+    const facts = [];
+    if (p.alt && p.alt.length) facts.push(["Другие имена", esc(p.alt.join(", "))]);
+    if (p.greek) facts.push(["У Манефона", esc(p.greek)]);
+    if (p.reign) facts.push(["Время", esc(p.reign)]);
+    const pmons = monsOf(id);
+    if (p.burial) facts.push(["Погребение", lp(p.burial) + (pmons.length ? ` <a href="#mon-${esc(pmons[0].id)}" class="ui" style="font-size:13px">схема ↓</a>` : "")]);
+    if (p.hiero && p.frame === "cartouche") facts.push(["Имя в картуше", `<span class="mini-cart"><span class="hg">${p.hiero}</span></span><span class="credit muted">Основные знаки имени, упрощённо</span>`]);
+    else if (p.hiero) facts.push(["Хорово имя", `<span class="mini-serekh"><span class="g">${p.god === "both" ? GLYPH.horus + GLYPH.seth : (GLYPH[p.god] || GLYPH.horus)}</span><span class="box"><span class="hg">${p.hiero}</span><span class="f"></span></span></span><span class="credit muted">Основные знаки имени, упрощённо</span>`]);
+
+    let nav = "";
+    if (d) {
+      const ord = d.order, i = ord.indexOf(id);
+      if (i >= 0) {
+        const prev = ord[i - 1], next = ord[i + 1];
+        nav = `<nav class="pnav" aria-label="Соседние правители">
+          ${prev ? `<a href="#p-${prev}"><span class="lbl">← Раньше в списке</span><span class="nm2">${esc(D.people[prev].name)}</span></a>` : `<span></span>`}
+          ${next ? `<a class="r" href="#p-${next}"><span class="lbl">Дальше в списке →</span><span class="nm2">${esc(D.people[next].name)}</span></a>` : ""}
+        </nav>`;
+      }
+    }
+    const kindBadge = p.kind === "king" ? "k" : "q";
+    const orderBadge = typeof p.order === "number" ? `<span class="badge">${p.order}-й царь династии</span>` : "";
+    const wiki = "https://ru.wikipedia.org/w/index.php?search=" + encodeURIComponent(p.name.replace(/[«»]/g, ""));
+
+    app.innerHTML = `
+      <nav class="crumbs" aria-label="Путь"><a href="#">Лента времени</a><span>›</span><a href="#d${p.dyn}">${esc(dynName(p.dyn))}</a><span>›</span><span>${esc(p.name)}</span></nav>
+      <header class="person-head">
+        <p class="kicker">${esc(per ? per.name : "")} · ${esc(dynName(p.dyn))}</p>
+        <h1>${esc(p.name)}</h1>
+        <p class="lead">${esc(p.lead || "")}</p>
+        <div class="badges"><span class="badge ${kindBadge}">${esc(roleText(p))}</span>${orderBadge}</div>
+      </header>
+      <div class="p-grid">
+        ${fig}
+        <dl class="facts">${facts.map(([a, b]) => `<dt>${a}</dt><dd>${b}</dd>`).join("")}</dl>
+      </div>
+      <section class="section bio"><h2>История</h2>${(p.bio || []).map(t => `<p>${lp(t)}</p>`).join("")}</section>
+      ${pmons.length ? `<section class="section"><h2>${pmons.length > 1 ? "Гробницы" : "Гробница"}</h2>${pmons.map(m => monCard(m, { owners: true })).join("")}</section>` : ""}
+      <section class="section"><h2>Семья и преемники</h2>${fam}</section>
+      <section class="section">
+        <h2>На древе</h2>
+        <div class="tree-scroll"><div class="tree" id="tree"></div></div>
+        <div class="ext-links" style="margin-top:14px"><a href="#d${p.dyn}">Открыть страницу «${esc(dynName(p.dyn))}»</a><a href="${wiki}" target="_blank" rel="noopener">Статья в Википедии</a></div>
+      </section>
+      ${nav}`;
+    drawTree(p.dyn, id);
+  }
+
+  /* ---------- Гробницы, пирамиды, места ---------- */
+  D.monuments = D.monuments || {}; D.places = D.places || {};
+  Object.entries(D.monuments).forEach(([id, m]) => { m.id = id; });
+  Object.entries(D.places).forEach(([id, p]) => { p.id = id; });
+  const SC = window.Schemes;
+  const MTYPE = { abydos: "царская гробница Абидоса", mastaba: "мастаба", gallery: "подземная галерейная гробница", enclosure: "заупокойная ограда", sarcophagus: "гробница в форме саркофага", stepmastaba: "двухступенчатая гробница", shaft: "шахтная гробница", rock: "скальная гробница", terrace: "террасный храм-гробница", saff: "сафф-гробница" };
+  const mtype = m => m.type === "pyramid" ? ((m.dims && m.dims.shape === "step") ? "ступенчатая пирамида" : (m.dims && m.dims.shape === "bent") ? "ломаная пирамида" : (m.dims && (m.dims.shape === "frustum" || m.dims.shape === "ruin")) ? "пирамида, недостроенная или разрушенная" : "пирамида") : (MTYPE[m.type] || "гробница");
+  const KIND = { capital: "столица", city: "город", necropolis: "некрополь", mine: "рудник или гавань" };
+  const KINDS = { capital: "Столицы", city: "Города", necropolis: "Некрополи", mine: "Рудники и гавани" };
+  const monsOf = pid => Object.values(D.monuments).filter(m => (m.owners || []).includes(pid));
+  const monsOfDyn = k => Object.values(D.monuments).filter(m => m.dyn === k);
+  const monsAt = plid => Object.values(D.monuments).filter(m => m.place === plid);
+  const nf = n => String(Math.round(n * 100) / 100).replace(".", ",");
+  const degTxt = a => { const d = Math.floor(a), mm = Math.round((a - d) * 60); return mm ? `${d}°${String(mm).padStart(2, "0")}′` : `${d}°`; };
+  function dimsText(m) {
+    const p = m.dims || {}, out = [];
+    if (m.type === "pyramid") {
+      if (p.base) out.push(`основание ${nf(p.base)} м`);
+      if (p.shape === "frustum") out.push(`построено ≈${nf(p.built)} м в высоту`);
+      else if (p.shape === "ruin") out.push(`сохранилось ≈${nf(p.now)} м`);
+      else if (p.height) out.push(`высота ${nf(p.height)} м`);
+      if (p.planned) out.push(`задумано ≈${nf(p.planned)} м`);
+      if (p.angle && p.shape === "bent") out.push(`наклон ${degTxt(p.angle)}, выше – ${degTxt(p.angle2)}`);
+      else if (p.angle && p.shape !== "ruin" && p.shape !== "frustum") out.push(`наклон ${degTxt(p.angle)}`);
+      if (p.core === "brick") out.push("ядро из сырцового кирпича");
+    } else if (m.type === "abydos") {
+      if (p.width && p.length) out.push(`≈${nf(p.width)} × ${nf(p.length)} м`);
+      if (p.subsidiary) out.push(`погребений слуг: ${p.subsidiary}`);
+    } else if (m.type === "enclosure") out.push(`≈${nf(p.length)} × ${nf(p.width)} м, высота до ${nf(p.height)} м`);
+    else if (m.type === "sarcophagus") out.push(`длина ${nf(p.length)} м, высота ≈${nf(p.height)} м`);
+    else if (m.type === "shaft" && p.depth) out.push(`глубина шахты ≈${nf(p.depth)} м`);
+    else if (m.type === "mastaba" && p.length) out.push(`длина ≈${nf(p.length)} м`);
+    return out.join("; ");
+  }
+  const SCAP = {
+    pyramid: "профиль пирамиды в том же масштабе, что и все пирамиды на сайте. Пунктиром показана Великая пирамида Хуфу для сравнения, штрихом – задуманная форма, если пирамиду не достроили.",
+    khufu: "профиль пирамиды в масштабе и её разрез с севера на юг – ходы и камеры внутри.",
+    mastaba: "разрез мастабы: надземная часть, шахта и погребальная камера под землёй.",
+    abydos: "план гробницы сверху: погребальная камера, кладовые и квадратики погребений слуг вокруг.",
+    gallery: "план подземных галерей, вырубленных в скале.",
+    enclosure: "план ограды сверху.", sarcophagus: "вид гробницы сбоку.",
+    stepmastaba: "вид гробницы сбоку: нижняя ступень вырублена из скалы, верхняя сложена из камня.",
+    shaft: "разрез шахтной гробницы.", rock: "разрез скальной гробницы.",
+    terrace: "разрез храма-гробницы от пандуса к скалам.", saff: "план сафф-гробницы сверху."
+  };
+  // ссылки на места в текстах
+  const stems = [];
+  Object.values(D.places).forEach(p => (p.match || [p.name]).forEach(st => stems.push([st, p.id])));
+  stems.sort((a, b) => b[0].length - a[0].length);
+  const stemTo = Object.fromEntries(stems);
+  const placeRe = stems.length ? new RegExp("(?<![А-Яа-яЁё])(" + stems.map(x => x[0].replace(/[-.*+?^${}()|[\]\\]/g, "\\$&")).join("|") + ")[А-Яа-яЁё]*", "g") : null;
+  function lp(text, exclude) {
+    const h = esc(text);
+    if (!placeRe) return h;
+    const used = new Set();
+    return h.replace(placeRe, (w, st) => { const id = stemTo[st]; if (!id || id === exclude || used.has(id)) return w; used.add(id); return `<a class="plink" href="#pl-${id}">${w}</a>`; });
+  }
+  function credit(img) { return `<span class="credit">Фото: ${esc(img.artist || "автор указан на странице файла")} · ${esc(img.license || "")} · <a href="${esc(img.page)}" target="_blank" rel="noopener">файл на Викискладе</a></span>`; }
+  function firstSvg(html) { const i = html.indexOf("</svg>"); return i > 0 ? html.slice(0, i + 6) : html; }
+
+  function monCard(m, opt = {}) {
+    const img = m.img && D.images[m.img];
+    const pl = D.places[m.place];
+    const scheme = SC ? SC.monument(m) : "";
+    const cap = m.id === "m-khufu" ? SCAP.khufu : SCAP[m.type] || "";
+    const dt = dimsText(m);
+    const facts = [];
+    if (pl) facts.push(["Где", `<a href="#pl-${pl.id}">${esc(pl.name)}</a>`]);
+    facts.push(["Династия", `<a href="#d${m.dyn}">${esc(dynName(m.dyn))}</a>`]);
+    if (dt) facts.push(["Размеры", esc(dt)]);
+    if (m.material) facts.push(["Материал", esc(m.material)]);
+    if (m.state) facts.push(["Сейчас", esc(m.state)]);
+    const owners = (m.owners || []).filter(o => D.people[o]);
+    if (opt.owners !== false && owners.length) facts.push(["Чья", owners.map(o => `<a href="#p-${o}">${esc(D.people[o].name)}</a>`).join(", ")]);
+    const fig = img ? `<figure class="mon-fig"><div class="fig-frame"><img src="${esc(img.img)}" alt="${esc(m.imgDesc || m.name)}" loading="lazy" width="${img.w}" height="${img.h}"></div><figcaption><b>Что на снимке.</b> ${esc(m.imgDesc || "")}${credit(img)}</figcaption></figure>` : "";
+    return `<article class="mon" id="mon-${esc(m.id)}">
+      <header class="mon-head"><h3>${opt.link === false ? esc(m.name) : `<a href="#${esc(m.id)}">${esc(m.name)}</a>`}</h3><span class="mon-type">${esc(mtype(m))}</span></header>
+      ${scheme ? `<div class="mon-scheme">${scheme}</div><p class="scheme-cap"><b>Что на схеме:</b> ${esc(cap)}</p>` : `<p class="scheme-cap">Размеры этой гробницы точно не известны, поэтому схемы в масштабе нет.</p>`}
+      <div class="mon-grid${fig ? "" : " noimg-grid"}">${fig}<div class="mon-text">
+        <dl class="facts">${facts.map(([a, b]) => `<dt>${a}</dt><dd>${b}</dd>`).join("")}</dl>
+        ${(m.features || []).length ? `<ul class="feat">${m.features.map(x => `<li>${esc(x)}</li>`).join("")}</ul>` : ""}
+        ${(m.desc || []).map(t => `<p>${lp(t, m.place)}</p>`).join("")}
+      </div></div>
+    </article>`;
+  }
+  function monMini(m) {
+    const sc = SC ? firstSvg(SC.monument(m)) : "";
+    const pl = D.places[m.place];
+    return `<a class="mm" href="#${esc(m.id)}">${sc}<b>${esc(m.name)}</b><span>${esc(mtype(m))}${pl ? " · " + esc(pl.name) : ""}</span></a>`;
+  }
+
+  function renderMonuments() {
+    const all = Object.values(D.monuments);
+    const pyr = all.filter(m => m.type === "pyramid" && m.dims && m.dims.base);
+    const byDyn = {};
+    all.forEach(m => (byDyn[m.dyn] = byDyn[m.dyn] || []).push(m));
+    const order = Object.keys(byDyn).sort((a, b) => (+a) - (+b));
+    app.innerHTML = `
+      <nav class="crumbs" aria-label="Путь"><a href="#">Лента времени</a><span>›</span><span>Пирамиды и гробницы</span></nav>
+      <header class="dyn-head"><p class="kicker">Где хоронили царей</p><h1>Пирамиды и гробницы</h1>
+      <p class="lead">${all.length} гробниц и пирамид от «нулевой» династии до XIII. У каждой – схема, у многих – снимок с описанием. Нажмите на гробницу, чтобы открыть её страницу.</p></header>
+      <section class="section"><h2>Все пирамиды в одном масштабе</h2>
+        <div class="scheme-scroll">${SC.compare(pyr)}</div>
+        <p class="scheme-cap"><b>Что на схеме:</b> профили ${pyr.length} пирамид в порядке постройки, все в одном масштабе. Кирпичная штриховка – пирамиды Среднего царства с ядром из сырцового кирпича, штрих – задуманная высота недостроенных. Схема прокручивается вбок; нажмите на пирамиду, чтобы открыть её страницу.</p>
+      </section>
+      <section class="section"><h2>Как устроен пирамидный комплекс</h2>
+        <div class="scheme-box">${SC.complexPlan()}</div>
+        <p class="scheme-cap"><b>Что на схеме:</b> у реки или канала стоял нижний храм, где встречали тело царя. От него крытая дорога вела к заупокойному храму у восточной стороны пирамиды. Рядом – малая пирамида-спутник, пирамиды цариц и ямы с ладьями для плавания царя по небу.</p>
+      </section>
+      ${order.map(k => `<section class="section"><h2>${esc(dynName(k))}</h2><div class="mons">${byDyn[k].map(monMini).join("")}</div></section>`).join("")}`;
+  }
+  function renderMonument(id) {
+    const m = D.monuments[id];
+    app.innerHTML = `
+      <nav class="crumbs" aria-label="Путь"><a href="#">Лента времени</a><span>›</span><a href="#monuments">Пирамиды и гробницы</a><span>›</span><span>${esc(m.name)}</span></nav>
+      <header class="dyn-head"><p class="kicker">${esc(dynName(m.dyn))} · ${esc(mtype(m))}</p><h1>${esc(m.name)}</h1></header>
+      ${monCard(m, { link: false })}
+      <div class="ext-links" style="margin-top:18px"><a href="#monuments">Все пирамиды и гробницы</a>${D.dynasties[m.dyn] ? `<a href="#d${m.dyn}">Страница «${esc(dynName(m.dyn))}»</a>` : ""}</div>`;
+  }
+
+  function mapKey() {
+    return `<div class="map-key"><span><i style="background:var(--gold)"></i>столица</span><span><i style="background:var(--blue)"></i>город</span><span><i style="background:var(--ink)"></i>некрополь</span><span><i style="background:var(--red)"></i>рудник или гавань</span></div>`;
+  }
+  function renderPlaces() {
+    const all = Object.values(D.places);
+    const palaces = all.filter(p => p.palaces && p.palaces.length);
+    app.innerHTML = `
+      <nav class="crumbs" aria-label="Путь"><a href="#">Лента времени</a><span>›</span><span>Места</span></nav>
+      <header class="dyn-head"><p class="kicker">Города, некрополи, дворцы</p><h1>Места</h1>
+      <p class="lead">${all.length} мест, где жили, правили и хоронили царей. Нажмите на точку на карте или на название в списке.</p></header>
+      <section class="section"><div class="map-grid">
+        <div><div class="scheme-box">${SC.egyptMap(all)}</div><p class="scheme-cap"><b>Что на схеме:</b> Египет от Средиземного моря до первого порога Нила. Пунктирная рамка – район Мемфиса и вход в Файюм, они показаны крупнее справа.</p></div>
+        <div><div class="scheme-box">${SC.memphisMap(all)}</div><p class="scheme-cap"><b>Что на схеме:</b> район Мемфиса – столица и 60 километров пирамидных полей вдоль края пустыни, от Абу-Роаша на севере до Мейдума на юге. Ниже – вход в оазис Файюм: Хавара, Лахун и Гераклеополь.</p></div>
+      </div>${mapKey()}</section>
+      <section class="section"><h2>Как выглядели дворцы</h2>
+        <div class="scheme-box">${SC.palaceFacade()}</div>
+        <p class="scheme-cap"><b>Что на схеме:</b> стена дворца с чередованием выступов и ниш и серех – рамка с именем царя, нижняя часть которой изображает такой же фасад.</p>
+        <p>Дворцы строили из сырцового кирпича и дерева, и почти все они растворились в земле. Мы знаем их по немногим раскопанным остаткам и по изображениям: серех, ограды Абидоса и ступенчатой пирамиды повторяют фасад дворца.</p>
+        ${palaces.map(p => p.palaces.map(x => `<div class="palace"><h3>${esc(x.name)}</h3><p>${esc(x.text)} <a href="#pl-${p.id}">${esc(p.name)} →</a></p></div>`).join("")).join("")}
+      </section>
+      ${Object.keys(KINDS).map(k => { const list = all.filter(p => p.kind === k); return list.length ? `<section class="section"><h2>${KINDS[k]}</h2><ul class="kind-list">${list.map(p => `<li><a href="#pl-${p.id}">${esc(p.name)}</a><span>${esc(p.lead || "")}</span></li>`).join("")}</ul></section>` : ""; }).join("")}`;
+  }
+  function renderPlace(id) {
+    const p = D.places[id], all = Object.values(D.places);
+    const img = p.img && D.images[p.img];
+    const map = p.memphis ? SC.memphisMap(all, id) : SC.egyptMap(all, id);
+    const fig = img ? `<figure><div class="fig-frame"><img src="${esc(img.img)}" alt="${esc(p.imgDesc || p.name)}" width="${img.w}" height="${img.h}"></div><figcaption><b>Что на снимке.</b> ${esc(p.imgDesc || "")}${credit(img)}</figcaption></figure>` : "";
+    const special = p.scheme === "giza" ? [SC.gizaPlan(), "план плато Гизы с севера: три великие пирамиды и пирамиды цариц в масштабе, поля мастаб к западу и востоку от Хуфу, Большой сфинкс и дорога к нижнему храму Хафры."]
+      : p.scheme === "kahun" ? [SC.kahunPlan(), "план города Кахун: стена делит его на квартал рабочих с маленькими домами и квартал больших усадеб; на возвышении – «акрополь»."]
+      : p.scheme === "facade" ? [SC.palaceFacade(), "фасад дворца с выступами и нишами, такой же, как в нижней части сереха."] : null;
+    const mons = monsAt(id);
+    app.innerHTML = `
+      <nav class="crumbs" aria-label="Путь"><a href="#">Лента времени</a><span>›</span><a href="#places">Места</a><span>›</span><span>${esc(p.name)}</span></nav>
+      <header class="dyn-head"><p class="kicker">${esc(KIND[p.kind] || "")}${p.ancient ? " · древнее имя: " + esc(p.ancient) : ""}</p><h1>${esc(p.name)}</h1><p class="lead">${esc(p.lead || "")}</p></header>
+      <div class="place-grid">
+        <div><div class="scheme-box">${map}</div><p class="scheme-cap"><b>Что на схеме:</b> ${p.memphis ? "район Мемфиса и Файюма" : "карта Египта"}; место «${esc(p.name)}» выделено крупной точкой с золотой обводкой.</p>${mapKey()}</div>
+        <div>${fig}${(p.desc || []).map(t => `<p>${lp(t, id)}</p>`).join("")}
+          ${(p.features || []).length ? `<h3 style="margin-top:14px">Что здесь есть</h3><ul class="feat">${p.features.map(x => `<li>${esc(x)}</li>`).join("")}</ul>` : ""}
+          ${(p.dyns || []).length ? `<h3 style="margin:14px 0 8px">Династии</h3><div class="dyn-chips">${p.dyns.map(k => D.dynasties[k] ? `<a href="#d${k}">${esc(dynShort(k))}</a>` : `<span>${esc(dynShort(k))}</span>`).join("")}</div>` : ""}
+        </div>
+      </div>
+      ${special ? `<section class="section"><h2>План</h2><div class="scheme-box">${special[0]}</div><p class="scheme-cap"><b>Что на схеме:</b> ${esc(special[1])}</p></section>` : ""}
+      ${(p.palaces || []).length ? `<section class="section"><h2>Дворцы</h2>${p.palaces.map(x => `<div class="palace"><h3>${esc(x.name)}</h3><p>${esc(x.text)}</p></div>`).join("")}</section>` : ""}
+      ${mons.length ? `<section class="section"><h2>Гробницы и пирамиды</h2><div class="mons">${mons.map(monMini).join("")}</div></section>` : ""}`;
+  }
+
+  /* ---------- Маршруты ---------- */
+  let current = null;
+  function route() {
+    const h = decodeURIComponent(location.hash.slice(1));
+    if (h.startsWith("p-") && D.people[h.slice(2)] && !D.people[h.slice(2)].stub) { current = { v: "p", id: h.slice(2) }; renderPerson(current.id); }
+    else if (/^d\w+$/.test(h) && D.dynasties[h.slice(1)]) { current = { v: "d", id: h.slice(1) }; renderDyn(current.id); }
+    else if (h === "monuments") { current = { v: "ms" }; renderMonuments(); }
+    else if (h.startsWith("m-") && D.monuments[h]) { current = { v: "m", id: h }; renderMonument(h); }
+    else if (h === "places") { current = { v: "pls" }; renderPlaces(); }
+    else if (h.startsWith("pl-") && D.places[h.slice(3)]) { current = { v: "pl", id: h.slice(3) }; renderPlace(current.id); }
+    else { current = { v: "h" }; renderHome(); }
+    window.scrollTo(0, 0);
+    closeSearch();
+    document.querySelectorAll(".topnav a").forEach(a => a.classList.toggle("on", (a.getAttribute("href") === "#" && current.v === "h") || (a.getAttribute("href") === "#monuments" && (current.v === "ms" || current.v === "m")) || (a.getAttribute("href") === "#places" && (current.v === "pls" || current.v === "pl"))));
+  }
+  window.addEventListener("hashchange", route);
+  document.addEventListener("click", e => {
+    const a = e.target.closest('a[href^="#mon-"]');
+    if (!a) return;
+    const el = document.getElementById(a.getAttribute("href").slice(1));
+    if (el) { e.preventDefault(); el.scrollIntoView({ behavior: matchMedia("(prefers-reduced-motion: reduce)").matches ? "auto" : "smooth", block: "start" }); }
+  });
+  let rt;
+  window.addEventListener("resize", () => {
+    clearTimeout(rt);
+    rt = setTimeout(() => {
+      if (!current) return;
+      if (current.v === "d") drawTree(current.id);
+      if (current.v === "p") drawTree(D.people[current.id].dyn, current.id);
+    }, 150);
+  });
+
+  /* ---------- Поиск ---------- */
+  const q = document.getElementById("q"), res = document.getElementById("results");
+  const norm = s => s.toLowerCase().replace(/ё/g, "е").replace(/[«»"'’\-]/g, " ").replace(/\s+/g, " ").trim();
+  const index = [
+    ...Object.entries(D.people).filter(([, p]) => !p.stub).map(([id, p]) => ({ href: "#p-" + id, name: p.name, sub: roleText(p) + " · " + dynName(p.dyn), hay: norm([p.name, ...(p.alt || []), p.greek || ""].join(" ")) })),
+    ...Object.values(D.monuments).map(m => ({ href: "#" + m.id, name: m.name, sub: mtype(m), hay: norm(m.name + " " + (m.short || "")) })),
+    ...Object.values(D.places).map(p => ({ href: "#pl-" + p.id, name: p.name, sub: KIND[p.kind] || "место", hay: norm(p.name + " " + (p.ancient || "")) }))
+  ];
+  let act = 0, found = [];
+  function closeSearch() { res.hidden = true; act = 0; }
+  function show() {
+    const v = norm(q.value);
+    if (!v) { closeSearch(); return; }
+    found = index.filter(x => x.hay.includes(v)).sort((a, b) => a.hay.indexOf(v) - b.hay.indexOf(v)).slice(0, 10);
+    act = 0;
+    res.innerHTML = found.length
+      ? found.map((x, i) => `<li><a href="${esc(x.href)}" class="${i === act ? "act" : ""}"><span>${esc(x.name)}</span><span class="r-sub">${esc(x.sub)}</span></a></li>`).join("")
+      : `<li class="empty">Никого не нашлось. Попробуйте другое написание имени.</li>`;
+    res.hidden = false;
+  }
+  q.addEventListener("input", show);
+  q.addEventListener("focus", () => { if (q.value) show(); });
+  q.addEventListener("keydown", e => {
+    if (res.hidden || !found.length) { if (e.key === "Escape") closeSearch(); return; }
+    if (e.key === "ArrowDown" || e.key === "ArrowUp") {
+      e.preventDefault();
+      act = (act + (e.key === "ArrowDown" ? 1 : found.length - 1)) % found.length;
+      res.querySelectorAll("a").forEach((a, i) => a.classList.toggle("act", i === act));
+    } else if (e.key === "Enter") {
+      e.preventDefault(); location.hash = found[act].href.slice(1); q.value = ""; q.blur(); closeSearch();
+    } else if (e.key === "Escape") { closeSearch(); }
+  });
+  res.addEventListener("click", () => { q.value = ""; closeSearch(); });
+  document.addEventListener("click", e => { if (!e.target.closest(".search")) closeSearch(); });
+
+  route();
+})();
+</script>
